@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بروتوكول الهجوم السيبراني - المنظومة السيادية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #080202; 
+            color: #ff3e3e; 
+            margin: 0; 
+            overflow-x: hidden;
+        }
+        .cyber-red-grid {
+            background-image: linear-gradient(rgba(255, 62, 62, 0.05) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255, 62, 62, 0.05) 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+        .attack-terminal {
+            background: rgba(20, 5, 5, 0.9);
+            border: 1px solid rgba(255, 62, 62, 0.3);
+            box-shadow: 0 0 20px rgba(255, 62, 62, 0.1);
+        }
+        .glitch-text {
+            animation: glitch 2s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 1px 0 0 red, -1px 0 0 blue; }
+            50% { text-shadow: -1px 0 0 red, 1px 0 0 blue; }
+            100% { text-shadow: 1px 0 0 red, -1px 0 0 blue; }
+        }
+    </style>
+</head>
+<body class="cyber-red-grid min-h-screen flex flex-col p-6">
+    <header class="flex justify-between items-center mb-8 border-b border-red-500/30 pb-4">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-red-500">terminal</span>
+            <h1 class="text-xs font-black tracking-widest uppercase">CYBER OFFENSIVE PROTOCOL</h1>
+        </div>
+        <div class="text-[10px] font-bold text-red-500 animate-pulse">STATUS: READY TO BREACH</div>
+    </header>
+
+    <main class="flex-1 flex flex-col gap-6">
+        <div class="attack-terminal p-4 rounded border-r-4 border-red-600">
+            <label class="text-[10px] uppercase font-bold opacity-70 block mb-2">تعريف الهدف / TARGET IP-DNS</label>
+            <input type="text" placeholder="0.0.0.0 / encrypted_node" class="bg-transparent border-b border-red-500/30 outline-none w-full py-2 text-xl font-mono text-red-400">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
+                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">leak_add</span>
+                <span class="text-[10px] font-bold">Infiltration / تسلل</span>
+            </button>
+            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
+                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">key_visualizer</span>
+                <span class="text-[10px] font-bold">Decryption / فك التشفير</span>
+            </button>
+            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
+                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">cell_tower</span>
+                <span class="text-[10px] font-bold">Signal Jam / تشويش</span>
+            </button>
+            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
+                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">shield_person</span>
+                <span class="text-[10px] font-bold">Ghost Mode / وضع الشبح</span>
+            </button>
+        </div>
+
+        <div class="attack-terminal flex-1 p-4 rounded font-mono text-[10px] overflow-hidden relative">
+            <div class="opacity-40 mb-2">LOG_SESSION_INITIATED...</div>
+            <div class="text-red-400 mb-1">> BYPASSING FIREWALL... [SUCCESS]</div>
+            <div class="text-red-400 mb-1">> EXTRACTING NODE DATA... [PENDING]</div>
+            <div class="text-white/20 absolute bottom-4 left-4 glitch-text uppercase font-bold">Sovereign_Control_Active</div>
+        </div>
+
+        <button class="w-full py-5 bg-red-600 text-black font-black text-sm uppercase tracking-[0.3em] shadow-[0_0_30px_rgba(255,62,62,0.3)] rounded hover:brightness-125 transition-all">
+            EXECUTE BREACH / تنفيذ الاختراق
+        </button>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-black/90 backdrop-blur-2xl border-t border-red-500/20">
+        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-red-500/50">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="text-[10px] uppercase font-bold">DASHBOARD</span>
+        </button>
+        <div class="flex flex-col items-center justify-center text-white bg-red-600 rounded-sm py-1 px-3 shadow-[0_0_12px_#ff3e3e]">
+            <span class="material-symbols-outlined">security_update_warning</span>
+            <span class="text-[10px] uppercase font-bold">CYBER</span>
+        </div>
+        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center justify-center text-red-500/50">
+            <span class="material-symbols-outlined">radar</span>
+            <span class="text-[10px] uppercase font-bold">RADAR</span>
+        </button>
+    </nav>
+</body>
+</html>
