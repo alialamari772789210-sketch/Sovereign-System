@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نواة التطور والإصلاح الذاتي - النسخة السيادية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: #050a14; 
+            color: #00f2ff; 
+            margin: 0; 
+            overflow-x: hidden;
+        }
+        .evolution-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0, 242, 255, 0.05) 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+        .core-pulse {
+            animation: pulse-ring 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .stat-bar {
+            height: 4px;
+            background: rgba(0, 242, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-progress {
+            height: 100%;
+            background: #00f2ff;
+            box-shadow: 0 0 10px #00f2ff;
+        }
+    </style>
+</head>
+<body class="evolution-grid min-h-screen flex flex-col p-6">
+    <header class="flex justify-between items-center mb-10 border-b border-cyan-500/20 pb-4">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-cyan-400">psychology</span>
+            <div>
+                <h1 class="text-xs font-black tracking-widest uppercase">Evolution Core</h1>
+                <div class="text-[10px] text-cyan-400/60 uppercase">Self-Healing Protocol v4.0</div>
+            </div>
+        </div>
+        <div class="px-3 py-1 border border-cyan-500/30 rounded text-[10px] font-bold">CORE STATUS: OPTIMAL</div>
+    </header>
+
+    <div class="flex-1 flex flex-col items-center justify-center gap-12">
+        <div class="relative">
+            <div class="w-40 h-40 border-2 border-cyan-500/20 rounded-full flex items-center justify-center core-pulse">
+                <div class="w-32 h-32 border border-cyan-400/40 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl">auto_awesome</span>
+                </div>
+            </div>
+            <div class="absolute -top-4 -left-4 w-12 h-12 cyber-card flex items-center justify-center rounded border border-cyan-400/30 bg-[#0d1321]">
+                <span class="material-symbols-outlined text-sm">bolt</span>
+            </div>
+        </div>
+
+        <div class="w-full max-w-md space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter">نواة التطور النشطة</h2>
+                <p class="text-xs opacity-60">مراقبة سلامة النظام وتطوير العمليات الذاتية</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="cyber-card p-4 rounded bg-cyan-950/20 border border-cyan-500/10">
+                    <div class="flex justify-between text-[10px] mb-2 font-bold uppercase">
+                        <span>System Integrity / سلامة النظام</span>
+                        <span>99.8%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-progress w-[99.8%]"></div></div>
+                </div>
+
+                <div class="cyber-card p-4 rounded bg-cyan-950/20 border border-cyan-500/10">
+                    <div class="flex justify-between text-[10px] mb-2 font-bold uppercase">
+                        <span>AI Cognitive Growth / نمو الذكاء</span>
+                        <span>84.2%</span>
+                    </div>
+                    <div class="stat-bar"><div class="stat-progress w-[84.2%]"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-8 border-t border-cyan-500/10 pt-6">
+        <h3 class="text-[10px] font-bold mb-4 uppercase tracking-[0.2em] opacity-60 text-center">سجل الإصلاحات التلقائية</h3>
+        <div class="space-y-2 max-h-40 overflow-y-auto pr-2">
+            <div class="flex items-center gap-3 text-[10px] bg-white/5 p-2 rounded">
+                <span class="text-green-400 font-bold">[FIXED]</span>
+                <span class="flex-1 opacity-80">تحسين استجابة الرادار في منطقة "الضالع"</span>
+                <span class="opacity-40">02:14:05</span>
+            </div>
+            <div class="flex items-center gap-3 text-[10px] bg-white/5 p-2 rounded">
+                <span class="text-cyan-400 font-bold">[AUTO]</span>
+                <span class="flex-1 opacity-80">تحديث مصفوفة التشفير السيادية</span>
+                <span class="opacity-40">01:55:12</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-slate-950/90 backdrop-blur-2xl border-t border-cyan-500/20">
+        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="text-[10px] uppercase font-bold">DASHBOARD</span>
+        </button>
+        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-sm py-1 px-3 shadow-[0_0_12px_#00f2ff]">
+            <span class="material-symbols-outlined">auto_mode</span>
+            <span class="text-[10px] uppercase font-bold">EVOLUTION</span>
+        </div>
+    </nav>
+</body>
+</html>
