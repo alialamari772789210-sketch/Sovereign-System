@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رادار الربط الفضائي - المنظومة السيادية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #050a14; color: #00f2ff; margin: 0; overflow: hidden; }
+        .radar-container { width: 320px; height: 320px; border-radius: 50%; border: 2px solid rgba(0, 242, 255, 0.3); position: relative; background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%); }
+        .radar-sweep { position: absolute; width: 50%; height: 50%; top: 0; left: 50%; background: linear-gradient(45deg, rgba(0, 242, 255, 0.4) 0%, transparent 70%); transform-origin: bottom left; animation: sweep 4s linear infinite; border-left: 1px solid rgba(0, 242, 255, 0.8); }
+        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .blip { position: absolute; width: 6px; height: 6px; background: #ff3e3e; border-radius: 50%; box-shadow: 0 0 10px #ff3e3e; animation: blink 1.5s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .distance-ring { position: absolute; border: 1px solid rgba(0, 242, 255, 0.1); border-radius: 50%; transform: translate(-50%, -50%); top: 50%; left: 50%; }
+    </style>
+</head>
+<body class="flex flex-col items-center p-6 min-h-screen">
+    <header class="w-full flex justify-between items-center mb-8 border-b border-cyan-500/20 pb-4">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400">radar</span>
+            <h1 class="text-xs font-black tracking-widest">TACTICAL RADAR | رادار تكتيكي</h1>
+        </div>
+        <div class="text-[10px] font-mono text-cyan-400 bg-cyan-950/40 px-2 py-1 rounded border border-cyan-500/20">
+            RANGE: 150KM
+        </div>
+    </header>
+
+    <div class="radar-container mb-10 shadow-[0_0_50px_rgba(0,242,255,0.1)]">
+        <div class="radar-sweep"></div>
+        <div class="distance-ring w-[100px] h-[100px]"></div>
+        <div class="distance-ring w-[200px] h-[200px]"></div>
+        <div class="distance-ring w-[300px] h-[300px]"></div>
+        <div class="absolute h-full w-[1px] bg-cyan-500/20 left-1/2"></div>
+        <div class="absolute w-full h-[1px] bg-cyan-500/20 top-1/2"></div>
+        <div class="blip top-[20%] left-[30%]"></div>
+        <div class="blip top-[60%] left-[75%]"></div>
+    </div>
+
+    <div class="w-full grid grid-cols-2 gap-4">
+        <div class="bg-slate-900/50 p-4 border border-cyan-500/10 rounded">
+            <div class="text-[10px] opacity-60 uppercase mb-2">الأهداف النشطة</div>
+            <div class="text-2xl font-black text-red-500">02</div>
+        </div>
+        <div class="bg-slate-900/50 p-4 border border-cyan-500/10 rounded">
+            <div class="text-[10px] opacity-60 uppercase mb-2">دقة التنبؤ</div>
+            <div class="text-2xl font-black text-cyan-400">94%</div>
+        </div>
+    </div>
+
+    <div class="w-full mt-6 space-y-3">
+        <button class="w-full py-4 bg-red-600/20 border border-red-500/40 text-red-400 font-bold text-xs uppercase tracking-widest rounded hover:bg-red-600/30 transition-all">
+            Engagement Mode / وضع الاشتباك
+        </button>
+        <button class="w-full py-4 bg-cyan-600/20 border border-cyan-500/40 text-cyan-400 font-bold text-xs uppercase tracking-widest rounded hover:bg-cyan-600/30 transition-all">
+            Sync with Evolution / مزامنة تطورية
+        </button>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-slate-950/90 backdrop-blur-2xl border-t border-cyan-500/20">
+        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="text-[10px] uppercase font-bold">DASHBOARD</span>
+        </button>
+        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-sm py-1 px-3 shadow-[0_0_12px_#00f2ff]">
+            <span class="material-symbols-outlined">radar</span>
+            <span class="text-[10px] uppercase font-bold">RADAR</span>
+        </div>
+        <button onclick="window.location.href='setup.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="text-[10px] uppercase font-bold">SETUP</span>
+        </button>
+    </nav>
+</body>
+</html>
