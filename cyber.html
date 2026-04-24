@@ -3,150 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بروتوكول الهجوم السيبراني - السيطرة المطلقة</title>
+    <title>بروتوكول الهجوم السيبراني - النسخة السيادية الموحدة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         body { 
             font-family: 'Space Grotesk', sans-serif; 
-            background-color: #080202; 
+            background-color: #0a0202; 
             color: #ff3e3e; 
             margin: 0; 
-            overflow-x: hidden;
+            overflow: hidden;
         }
-        .cyber-red-grid {
-            background-image: linear-gradient(rgba(255, 62, 62, 0.05) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(255, 62, 62, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
+        .cyber-grid {
+            background-image: linear-gradient(rgba(255, 62, 62, 0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255, 62, 62, 0.03) 1px, transparent 1px);
+            background-size: 25px 25px;
         }
-        .attack-terminal {
-            background: rgba(20, 5, 5, 0.9);
-            border: 1px solid rgba(255, 62, 62, 0.3);
-            box-shadow: 0 0 20px rgba(255, 62, 62, 0.1);
+        .terminal-box {
+            background: rgba(15, 5, 5, 0.9);
+            border: 1px solid rgba(255, 62, 62, 0.2);
+            box-shadow: inset 0 0 20px rgba(255, 62, 62, 0.05);
         }
-        .breach-active {
-            animation: pulse-alert 0.8s infinite;
+        .status-pulse {
+            animation: pulse-red 1.5s infinite;
         }
-        @keyframes pulse-alert {
-            0% { box-shadow: inset 0 0 50px rgba(255, 62, 62, 0); }
-            50% { box-shadow: inset 0 0 100px rgba(255, 62, 62, 0.2); }
-            100% { box-shadow: inset 0 0 50px rgba(255, 62, 62, 0); }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 62, 62, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
         }
-        .glitch {
-            animation: glitch-anim 0.3s infinite;
-            display: none;
-        }
-        @keyframes glitch-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        .breach-effect {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(255,0,0,0.05) 0px, transparent 2px);
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="cyber-red-grid min-h-screen flex flex-col p-6" id="main-frame">
-    
+<body class="cyber-grid min-h-screen flex flex-col p-6" onload="bootAttackProtocol()">
+
     <header class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
         <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-red-600 animate-pulse">security_update_warning</span>
+            <span class="material-symbols-outlined text-red-600 scale-125">key_visualizer</span>
             <div>
-                <h1 class="text-xs font-black tracking-[0.2em] uppercase text-red-500">Cyber Offensive Protocol</h1>
-                <div class="text-[9px] font-mono opacity-50">STRIKE_FORCE_UNIT_v7.2.0</div>
+                <h1 class="text-xs font-black tracking-[0.3em] uppercase text-red-500">Cyber Offensive Unit</h1>
+                <div class="text-[9px] font-mono text-red-600/60 uppercase">Absolute Control Protocol v7.2.5</div>
             </div>
         </div>
-        <div id="op-status" class="px-2 py-1 bg-red-950/40 border border-red-600/30 rounded text-[9px] font-bold">
-            STATUS: STANDBY
+        <div id="lock-status" class="px-3 py-1 bg-red-950/40 border border-red-600/30 rounded text-[9px] font-black tracking-widest text-white">
+            LINK: DISCONNECTED
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col gap-6 max-w-lg mx-auto w-full">
-        <div class="attack-terminal p-5 rounded-lg border-r-4 border-red-600">
-            <label class="text-[10px] uppercase font-black opacity-60 mb-3 block tracking-widest">تعريف الهدف السيبراني / TARGET_ID</label>
-            <input type="text" id="target-id" placeholder="HOST_NODE / IP_ADDRESS" class="bg-transparent border-b-2 border-red-600/50 outline-none w-full py-2 text-xl font-mono text-red-500 placeholder:text-red-900">
+    <main class="flex-1 flex flex-col gap-6 max-w-lg mx-auto w-full relative">
+        <div class="breach-effect"></div>
+
+        <div class="terminal-box p-5 rounded-xl border-r-4 border-red-600">
+            <label class="text-[10px] uppercase font-bold opacity-50 mb-2 block tracking-widest">تحديد الهدف السيبراني / Target Node</label>
+            <div class="flex gap-3">
+                <input type="text" id="target-node" placeholder="IP / DOMAIN / HOST" class="bg-red-600/5 border border-red-600/30 outline-none w-full p-3 text-lg font-mono text-red-500 rounded placeholder:text-red-900/50">
+            </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
-            <div class="attack-terminal p-4 rounded flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-all cursor-pointer">
-                <span class="material-symbols-outlined text-3xl">key_visualizer</span>
-                <span class="text-[9px] font-bold uppercase">Decryption</span>
-            </div>
-            <div class="attack-terminal p-4 rounded flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-all cursor-pointer">
+        <div class="grid grid-cols-2 gap-3">
+            <div onclick="selectOp('Infiltration')" class="terminal-box p-4 rounded flex flex-col items-center gap-2 cursor-pointer hover:bg-red-600/10 transition-all border border-red-600/20">
                 <span class="material-symbols-outlined text-3xl">leak_add</span>
-                <span class="text-[9px] font-bold uppercase">Infiltration</span>
+                <span class="text-[9px] font-black uppercase">Infiltration</span>
+            </div>
+            <div onclick="selectOp('Signal Override')" class="terminal-box p-4 rounded flex flex-col items-center gap-2 cursor-pointer hover:bg-red-600/10 transition-all border border-red-600/20">
+                <span class="material-symbols-outlined text-3xl">settings_input_antenna</span>
+                <span class="text-[9px] font-black uppercase">Override</span>
             </div>
         </div>
 
-        <div class="attack-terminal flex-1 p-4 rounded-lg font-mono text-[10px] min-h-[180px] relative overflow-hidden">
-            <div id="terminal-logs" class="space-y-1">
-                <div class="opacity-40">> SYSTEM_READY...</div>
-                <div class="opacity-40">> WAITING_FOR_OPERATIONAL_COMMAND...</div>
+        <div class="terminal-box flex-1 p-4 rounded-lg font-mono text-[10px] overflow-hidden flex flex-col">
+            <div id="output-stream" class="space-y-1 opacity-80">
+                <div class="text-red-600/50">> AWAITING COMMAND AUTHORIZATION...</div>
             </div>
-            <div id="glitch-overlay" class="glitch absolute inset-0 bg-red-600/10 flex items-center justify-center font-black text-2xl uppercase italic">Breach Active</div>
         </div>
 
-        <button onclick="executeAbsoluteControl()" class="w-full py-5 bg-red-700 text-black font-black text-sm uppercase tracking-[0.4em] rounded shadow-[0_0_30px_rgba(255,0,0,0.2)] hover:bg-red-600 active:scale-95 transition-all">
-            Execute Absolute Control
+        <button onclick="initiateAbsoluteControl()" class="status-pulse w-full py-5 bg-red-600 text-black font-black text-xs uppercase tracking-[0.4em] rounded shadow-[0_0_25px_rgba(255,0,0,0.3)] active:scale-95 transition-all">
+            Execute Absolute Breach
         </button>
     </main>
 
     <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-black/95 backdrop-blur-3xl border-t border-red-600/20">
-        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-red-600/40">
+        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center text-red-600/40">
             <span class="material-symbols-outlined">grid_view</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Dashboard</span>
+            <span class="text-[9px] font-bold uppercase mt-1">Main</span>
         </button>
-        <div class="flex flex-col items-center justify-center text-white bg-red-700 rounded-lg py-2 px-6 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
+        <div class="flex flex-col items-center text-white bg-red-600 px-6 py-2 rounded-lg shadow-[0_0_20px_rgba(255,0,0,0.4)]">
             <span class="material-symbols-outlined">bolt</span>
-            <span class="text-[10px] uppercase font-black">CYBER</span>
+            <span class="text-[10px] font-black uppercase">CYBER</span>
         </div>
-        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center justify-center text-red-600/40">
+        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center text-red-600/40">
             <span class="material-symbols-outlined">radar</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Radar</span>
+            <span class="text-[9px] font-bold uppercase mt-1">Radar</span>
         </button>
     </nav>
 
     <script>
-        function executeAbsoluteControl() {
-            const target = document.getElementById('target-id').value || "UNKNOWN_NODE";
-            const logs = document.getElementById('terminal-logs');
-            const status = document.getElementById('op-status');
-            const frame = document.getElementById('main-frame');
-            const glitch = document.getElementById('glitch-overlay');
+        function bootAttackProtocol() {
+            const msg = "سيادة العقيد علي العماري، وحدة الهجوم السيبراني جاهزة. بانتظار تحديد الهدف لبدء بروتوكول السيطرة المطلقة.";
+            speak(msg);
+        }
 
-            // 1. النداء الصوتي الاستباقي
-            const alertMsg = `سيادة العقيد، تم تفعيل بروتوكول الهجوم السيبراني الموحد. جاري تنفيذ الاختراق المطلق للهدف ${target}. السيطرة الكاملة قيد التحقيق الآن.`;
-            const utterance = new SpeechSynthesisUtterance(alertMsg);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.9;
-            utterance.pitch = 0.7; // نبرة عميقة وسلطوية
-            window.speechSynthesis.speak(utterance);
+        function selectOp(op) {
+            const line = document.createElement('div');
+            line.innerHTML = `<span class="text-white">[SELECTED]</span> OPERATION: ${op.toUpperCase()}`;
+            document.getElementById('output-stream').appendChild(line);
+            speak(`تم اختيار نمط ${op}`);
+        }
 
-            // 2. تحديث الواجهة لبدء الهجوم
-            status.innerText = "STATUS: BREACH_ACTIVE";
-            status.classList.add('text-white', 'bg-red-600');
-            frame.classList.add('breach-active');
-            glitch.style.display = "flex";
+        function initiateAbsoluteControl() {
+            const target = document.getElementById('target-node').value || "UNKNOWN_NODE";
+            const stream = document.getElementById('output-stream');
+            const status = document.getElementById('lock-status');
 
-            // 3. محاكاة سجلات السيطرة
-            const commands = [
-                `> INITIALIZING STRIKE ON ${target}...`,
-                `> BYPASSING NETWORK FIREWALLS... [OK]`,
-                `> INJECTING CONTROL FRAGMENTS... [OK]`,
-                `> ESTABLISHING SOVEREIGN OVERRIDE...`,
-                `> TOTAL SYSTEM CONTROL GRANTED.`
+            speak(`بدء بروتوكول السيطرة المطلقة على الهدف ${target}. جاري اختراق مصفوفة الدفاع وتجاوز التشفير السيادي.`);
+            
+            status.innerText = "LINK: BREACH_ACTIVE";
+            status.classList.replace('bg-red-950/40', 'bg-red-600');
+
+            const steps = [
+                `> TARGET_LOCKED: ${target}`,
+                `> BYPASSING ENCRYPTION LAYERS... [OK]`,
+                `> INJECTING MALICIOUS FRAGMENTS... [OK]`,
+                `> OVERRIDING COMMAND CORE... [OK]`,
+                `> TOTAL SOVEREIGN CONTROL ESTABLISHED.`
             ];
 
-            commands.forEach((cmd, index) => {
+            steps.forEach((txt, i) => {
                 setTimeout(() => {
-                    const line = document.createElement('div');
-                    line.className = "text-red-500 font-bold mb-1";
-                    line.innerText = cmd;
-                    logs.appendChild(line);
-                    logs.scrollTop = logs.scrollHeight;
-                }, (index + 1) * 1200);
+                    const l = document.createElement('div');
+                    l.className = "text-white font-bold animate-pulse";
+                    l.innerText = txt;
+                    stream.appendChild(l);
+                    if(i === steps.length -1) speak("تمت السيطرة المطلقة بنجاح.");
+                }, (i + 1) * 1200);
             });
+        }
+
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'ar-SA';
+            u.rate = 0.9;
+            u.pitch = 0.8; 
+            window.speechSynthesis.speak(u);
         }
     </script>
 </body>
