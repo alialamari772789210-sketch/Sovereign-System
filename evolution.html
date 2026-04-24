@@ -3,118 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نواة التطور والإصلاح الذاتي - النسخة السيادية</title>
+    <title>لوحة القيادة الاستراتيجية المحدثة - المنظومة السيادية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
-        body { 
-            font-family: 'Space Grotesk', sans-serif; 
-            background-color: #050a14; 
-            color: #00f2ff; 
-            margin: 0; 
-            overflow-x: hidden;
-        }
-        .evolution-grid {
-            background-image: radial-gradient(circle at 2px 2px, rgba(0, 242, 255, 0.05) 1px, transparent 0);
-            background-size: 30px 30px;
-        }
-        .core-pulse {
-            animation: pulse-ring 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); opacity: 0.5; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(0.95); opacity: 0.5; }
-        }
-        .stat-bar {
-            height: 4px;
-            background: rgba(0, 242, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-progress {
-            height: 100%;
-            background: #00f2ff;
-            box-shadow: 0 0 10px #00f2ff;
-        }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0d1321; color: #00f2ff; margin: 0; padding-bottom: 80px; }
+        .cyber-card { background: rgba(13, 19, 33, 0.8); border: 1px solid rgba(0, 242, 255, 0.2); backdrop-filter: blur(10px); }
+        .scan-line { height: 2px; background: rgba(0, 242, 255, 0.5); position: absolute; width: 100%; top: 0; animation: scan 3s linear infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .grid-bg { background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px); background-size: 20px 20px; }
+        .ready-pulse { animation: ready-glow 2s infinite; }
+        @keyframes ready-glow { 0%, 100% { text-shadow: 0 0 5px #00f2ff; } 50% { text-shadow: 0 0 20px #00f2ff, 0 0 30px #00f2ff; } }
     </style>
 </head>
-<body class="evolution-grid min-h-screen flex flex-col p-6">
-    <header class="flex justify-between items-center mb-10 border-b border-cyan-500/20 pb-4">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-cyan-400">psychology</span>
-            <div>
-                <h1 class="text-xs font-black tracking-widest uppercase">Evolution Core</h1>
-                <div class="text-[10px] text-cyan-400/60 uppercase">Self-Healing Protocol v4.0</div>
-            </div>
+<body class="grid-bg min-h-screen p-4" onload="playReadinessGreeting()">
+    <header class="flex justify-between items-center mb-6 border-b border-cyan-500/30 pb-4">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400">dashboard_customize</span>
+            <h1 class="text-xs font-bold tracking-widest uppercase">STRATEGIC COMMAND v2.0</h1>
         </div>
-        <div class="px-3 py-1 border border-cyan-500/30 rounded text-[10px] font-bold">CORE STATUS: OPTIMAL</div>
+        <div class="flex flex-col items-end">
+            <div id="current-region" class="text-[10px] font-bold text-white bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/30">المنطقة: جاري التحديد...</div>
+            <div class="text-[8px] text-cyan-400 font-mono uppercase mt-1">Satellite Status: <span class="ready-pulse">Optimal</span></div>
+        </div>
     </header>
 
-    <div class="flex-1 flex flex-col items-center justify-center gap-12">
-        <div class="relative">
-            <div class="w-40 h-40 border-2 border-cyan-500/20 rounded-full flex items-center justify-center core-pulse">
-                <div class="w-32 h-32 border border-cyan-400/40 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-6xl">auto_awesome</span>
-                </div>
+    <div class="grid grid-cols-1 gap-4">
+        <div class="cyber-card h-56 rounded relative overflow-hidden border-2 border-cyan-500/20">
+            <div class="scan-line"></div>
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800')] bg-cover opacity-30"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                <div class="w-full h-[1px] bg-cyan-400"></div>
+                <div class="absolute h-full w-[1px] bg-cyan-400"></div>
             </div>
-            <div class="absolute -top-4 -left-4 w-12 h-12 cyber-card flex items-center justify-center rounded border border-cyan-400/30 bg-[#0d1321]">
-                <span class="material-symbols-outlined text-sm">bolt</span>
+
+            <div class="absolute top-4 left-4 flex flex-col gap-1">
+                <div class="text-[8px] font-mono text-cyan-400 bg-black/60 p-1">LAT: 13.9617° N</div>
+                <div class="text-[8px] font-mono text-cyan-400 bg-black/60 p-1">LONG: 44.7314° E</div>
+            </div>
+
+            <div class="absolute bottom-4 left-4 right-4">
+                <div class="flex justify-between items-end">
+                    <div class="bg-black/80 p-2 rounded border border-cyan-500/30">
+                        <div class="text-[8px] uppercase opacity-60 mb-1">التحقق الجغرافي المطور</div>
+                        <div id="geo-status" class="text-[10px] font-bold text-cyan-400">تأكيد الربط مع الأقمار الصناعية...</div>
+                    </div>
+                    <span class="material-symbols-outlined text-4xl animate-pulse text-cyan-400">biotech</span>
+                </div>
             </div>
         </div>
 
-        <div class="w-full max-w-md space-y-6">
-            <div class="text-center">
-                <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter">نواة التطور النشطة</h2>
-                <p class="text-xs opacity-60">مراقبة سلامة النظام وتطوير العمليات الذاتية</p>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="cyber-card p-4 rounded text-center border-b-2 border-green-500/50">
+                <div class="text-[9px] opacity-60 uppercase mb-1">جاهزية المنظومة</div>
+                <div class="text-xl font-black text-green-400 uppercase">Maximum</div>
             </div>
-
-            <div class="space-y-4">
-                <div class="cyber-card p-4 rounded bg-cyan-950/20 border border-cyan-500/10">
-                    <div class="flex justify-between text-[10px] mb-2 font-bold uppercase">
-                        <span>System Integrity / سلامة النظام</span>
-                        <span>99.8%</span>
-                    </div>
-                    <div class="stat-bar"><div class="stat-progress w-[99.8%]"></div></div>
-                </div>
-
-                <div class="cyber-card p-4 rounded bg-cyan-950/20 border border-cyan-500/10">
-                    <div class="flex justify-between text-[10px] mb-2 font-bold uppercase">
-                        <span>AI Cognitive Growth / نمو الذكاء</span>
-                        <span>84.2%</span>
-                    </div>
-                    <div class="stat-bar"><div class="stat-progress w-[84.2%]"></div></div>
-                </div>
+            <div class="cyber-card p-4 rounded text-center border-b-2 border-cyan-500/50">
+                <div class="text-[9px] opacity-60 uppercase mb-1">مستوى التشفير</div>
+                <div class="text-xl font-black text-cyan-400 uppercase">Sovereign</div>
             </div>
         </div>
-    </div>
 
-    <div class="mt-8 border-t border-cyan-500/10 pt-6">
-        <h3 class="text-[10px] font-bold mb-4 uppercase tracking-[0.2em] opacity-60 text-center">سجل الإصلاحات التلقائية</h3>
-        <div class="space-y-2 max-h-40 overflow-y-auto pr-2">
-            <div class="flex items-center gap-3 text-[10px] bg-white/5 p-2 rounded">
-                <span class="text-green-400 font-bold">[FIXED]</span>
-                <span class="flex-1 opacity-80">تحسين استجابة الرادار في منطقة "الضالع"</span>
-                <span class="opacity-40">02:14:05</span>
-            </div>
-            <div class="flex items-center gap-3 text-[10px] bg-white/5 p-2 rounded">
-                <span class="text-cyan-400 font-bold">[AUTO]</span>
-                <span class="flex-1 opacity-80">تحديث مصفوفة التشفير السيادية</span>
-                <span class="opacity-40">01:55:12</span>
-            </div>
+        <div class="grid grid-cols-2 gap-3 mt-2">
+            <button onclick="window.location.href='radar.html'" class="cyber-card p-5 rounded flex flex-col items-center gap-2 hover:bg-cyan-950/30 transition-all">
+                <span class="material-symbols-outlined text-2xl">radar</span>
+                <span class="text-[10px] font-bold">الرادار التكتيكي</span>
+            </button>
+            <button onclick="window.location.href='evolution.html'" class="cyber-card p-5 rounded flex flex-col items-center gap-2 hover:bg-cyan-950/30 transition-all">
+                <span class="material-symbols-outlined text-2xl">auto_mode</span>
+                <span class="text-[10px] font-bold">نواة التطور</span>
+            </button>
+            <button onclick="window.location.href='cyber.html'" class="cyber-card p-5 rounded flex flex-col items-center gap-2 border-l-2 border-red-500/40 hover:bg-red-950/20 transition-all">
+                <span class="material-symbols-outlined text-2xl text-red-500">security_update_warning</span>
+                <span class="text-[10px] font-bold text-red-400">الهجوم السيبراني</span>
+            </button>
+            <button class="cyber-card p-5 rounded flex flex-col items-center gap-2 opacity-40 cursor-not-allowed">
+                <span class="material-symbols-outlined text-2xl">settings_input_antenna</span>
+                <span class="text-[10px] font-bold">الاتصال الموحد</span>
+            </button>
         </div>
     </div>
 
     <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-slate-950/90 backdrop-blur-2xl border-t border-cyan-500/20">
-        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-sm py-1 px-3 shadow-[0_0_12px_#00f2ff]">
             <span class="material-symbols-outlined">grid_view</span>
             <span class="text-[10px] uppercase font-bold">DASHBOARD</span>
-        </button>
-        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-sm py-1 px-3 shadow-[0_0_12px_#00f2ff]">
-            <span class="material-symbols-outlined">auto_mode</span>
-            <span class="text-[10px] uppercase font-bold">EVOLUTION</span>
         </div>
+        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+            <span class="material-symbols-outlined">radar</span>
+            <span class="text-[10px] uppercase font-bold">RADAR</span>
+        </button>
+        <button onclick="window.location.href='setup.html'" class="flex flex-col items-center justify-center text-cyan-400/50">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="text-[10px] uppercase font-bold">SETUP</span>
+        </button>
     </nav>
+
+    <script>
+        function playReadinessGreeting() {
+            const savedRegion = localStorage.getItem('region') || "المنطقة المحددة";
+            document.getElementById('current-region').innerText = `المنطقة: ${savedRegion}`;
+            
+            // نداء الجاهزية
+            const msg = `تأكيد الدخول. تم تفعيل لوحة القيادة الاستراتيجية. المنظومة في حالة الجاهزية القصوى ضمن نطاق ${savedRegion}. جميع الأنظمة تعمل بكفاءة تامة.`;
+            const utterance = new SpeechSynthesisUtterance(msg);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.0;
+            
+            window.speechSynthesis.speak(utterance);
+            
+            setTimeout(() => {
+                document.getElementById('geo-status').innerText = "تم التحقق من الربط الجغرافي بنجاح";
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
