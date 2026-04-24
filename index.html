@@ -20,157 +20,146 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 50px;
-            overflow: hidden;
+            padding-top: 20px;
         }
 
-        /* الجزء العلوي (شريط الحالة) */
         .header-bar {
             width: 90%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
-        .header-bar span { color: var(--accent-cyan); font-weight: bold; letter-spacing: 2px; }
-
-        /* الصورة الشخصية والاسم */
-        .profile-section { text-align: center; margin-bottom: 30px; }
-        .profile-img {
-            width: 150px; height: 150px;
-            border-radius: 50%;
-            border: 3px solid var(--gold);
-            object-fit: cover;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
+        .commander-logo { width: 120px; margin-bottom: 10px; }
+        
         .commander-name {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--accent-cyan);
-            margin-top: 15px;
+            margin: 10px 0;
             font-weight: bold;
         }
-        .sub-text { font-size: 0.8rem; letter-spacing: 3px; color: rgba(255,255,255,0.6); }
 
-        /* حقل عرض الكود */
-        #display-code {
+        #display-box {
             width: 85%;
             height: 60px;
             background: rgba(0,0,0,0.3);
             border: 2px solid #1a3a5a;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            letter-spacing: 5px;
             color: var(--accent-cyan);
+            letter-spacing: 5px;
         }
 
-        /* لوحة المفاتيح المخصصة (كما في الصورة) */
-        .keyboard {
+        /* حاوية لوحة المفاتيح المحدثة */
+        .keyboard-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
+            gap: 5px;
             width: 95%;
-            padding: 10px;
+            margin-bottom: 10px;
         }
 
         .key {
             background: var(--btn-bg);
             border: 1px solid #1f3d5a;
-            padding: 15px 5px;
+            padding: 12px 2px;
             border-radius: 4px;
             text-align: center;
+            color: var(--accent-cyan);
             font-weight: bold;
             cursor: pointer;
-            color: var(--accent-cyan);
-            transition: 0.2s;
+            font-size: 0.9rem;
         }
 
-        .key:active { background: var(--accent-cyan); color: black; }
-        .key.delete { background: #2d1010; color: #ff3e3e; }
+        .key:active { background: var(--accent-cyan); color: #000; }
+        .key.del { background: #3d1616; color: #ff3e3e; }
 
-        .num-keys { grid-template-columns: repeat(5, 1fr); margin-top: 15px; }
-
+        .num-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            width: 95%;
+        }
     </style>
 </head>
 <body>
 
 <div class="header-bar">
-    <span>((•))</span>
-    <span>SOVEREIGN COMMAND 🛡️</span>
+    <span style="color:var(--accent-cyan)">🛡️</span>
+    <span style="letter-spacing: 2px;">SOVEREIGN COMMAND</span>
+    <span style="color:var(--accent-cyan)">((•))</span>
 </div>
 
-<div class="profile-section">
-    <img src="https://via.placeholder.com/150" class="profile-img" alt="Commander">
-    <div class="commander-name">العقيد علي العماري</div>
-    <div class="sub-text">SOVEREIGN SYSTEM ACCESS GATE</div>
-    <div style="font-size: 0.7rem; color: #555; margin-top: 5px;">Voice Greeting Active</div>
+<img src="commander_logo.png" class="commander-logo" alt="Commander"> <div class="commander-name">العقيد علي العماري</div>
+<div style="font-size: 0.7rem; color: #666; margin-bottom: 15px;">SOVEREIGN SYSTEM ACCESS GATE</div>
+
+<div id="display-box">********</div>
+
+<div class="keyboard-grid">
+    <div class="key" onclick="add('Q')">Q</div><div class="key" onclick="add('W')">W</div>
+    <div class="key" onclick="add('E')">E</div><div class="key" onclick="add('R')">R</div>
+    <div class="key" onclick="add('T')">T</div><div class="key" onclick="add('Y')">Y</div>
+    <div class="key" onclick="add('U')">U</div><div class="key" onclick="add('I')">I</div>
+    <div class="key" onclick="add('O')">O</div><div class="key" onclick="add('P')">P</div>
 </div>
 
-<div id="display-code">********</div>
-
-<div class="keyboard">
-    <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div>
-    <div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div>
-    <div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div>
-    <div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div>
-    <div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
-    <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div>
-    <div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div>
-    <div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div>
-    <div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div>
-    <div class="key" onclick="press('L')">L</div><div class="key delete" onclick="del()">⌫</div>
+<div class="keyboard-grid">
+    <div class="key del" onclick="back()">⌫</div>
+    <div class="key" onclick="add('A')">A</div><div class="key" onclick="add('S')">S</div>
+    <div class="key" onclick="add('D')">D</div><div class="key" onclick="add('F')">F</div>
+    <div class="key" onclick="add('G')">G</div><div class="key" onclick="add('H')">H</div>
+    <div class="key" onclick="add('J')">J</div><div class="key" onclick="add('K')">K</div>
+    <div class="key" onclick="add('L')">L</div>
 </div>
 
-<div class="keyboard num-keys">
-    <div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div>
-    <div class="key" onclick="press('3')">3</div><div class="key" onclick="press('4')">4</div>
-    <div class="key" onclick="press('5')">5</div>
-    <div class="key" onclick="press('6')">6</div><div class="key" onclick="press('7')">7</div>
-    <div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div>
-    <div class="key" onclick="press('0')">0</div>
+<div class="keyboard-grid">
+    <div style="grid-column: span 1.5;"></div> <div class="key" onclick="add('Z')">Z</div><div class="key" onclick="add('X')">X</div>
+    <div class="key" onclick="add('C')">C</div><div class="key" onclick="add('V')">V</div>
+    <div class="key" onclick="add('B')">B</div><div class="key" onclick="add('N')">N</div>
+    <div class="key" onclick="add('M')">M</div>
+    <div style="grid-column: span 1.5;"></div>
+</div>
+
+<div class="num-grid">
+    <div class="key" onclick="add('1')">1</div><div class="key" onclick="add('2')">2</div>
+    <div class="key" onclick="add('3')">3</div><div class="key" onclick="add('4')">4</div>
+    <div class="key" onclick="add('5')">5</div>
+    <div class="key" onclick="add('6')">6</div><div class="key" onclick="add('7')">7</div>
+    <div class="key" onclick="add('8')">8</div><div class="key" onclick="add('9')">9</div>
+    <div class="key" onclick="add('0')">0</div>
 </div>
 
 <script>
-    let inputCode = "";
-    const MASTER_CODE = "Alic2A2026";
+    let code = "";
+    const SECRET = "Alic2A2026";
 
-    function press(char) {
-        inputCode += char;
-        updateDisplay();
-        if (inputCode === MASTER_CODE) {
-            accessGranted();
+    function add(char) {
+        code += char;
+        document.getElementById('display-box').innerText = "*".repeat(code.length);
+        if(code === SECRET) {
+            validate();
         }
     }
 
-    function del() {
-        inputCode = inputCode.slice(0, -1);
-        updateDisplay();
+    function back() {
+        code = code.slice(0, -1);
+        document.getElementById('display-box').innerText = "*".repeat(code.length) || "********";
     }
 
-    function updateDisplay() {
-        // عرض نجوم بدلاً من الكود للحماية
-        document.getElementById('display-code').innerText = "*".repeat(inputCode.length) || "********";
-    }
-
-    function speak(text) {
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = text;
+    function validate() {
+        const msg = new SpeechSynthesisUtterance("تم التحقق. أهلاً بك أيها القائد علي العمري.");
         msg.lang = 'ar-SA';
         window.speechSynthesis.speak(msg);
-    }
-
-    function accessGranted() {
-        speak("تم التحقق من الكود السيادي. أهلاً بك أيها القائد علي العمري. جاري فتح لوحة القيادة.");
-        document.getElementById('display-code').style.borderColor = "#00ff41";
-        document.getElementById('display-code').style.color = "#00ff41";
         
+        document.getElementById('display-box').style.borderColor = "#00ff41";
         setTimeout(() => {
-            window.location.href = "dashboard.html"; // اسم الملف الرئيسي
-        }, 3000);
+            window.location.href = "dashboard.html";
+        }, 2500);
     }
 </script>
 
