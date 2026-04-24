@@ -3,83 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة الدخول السيادية</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>AEGIS | نظام التحقق السيادي</title>
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #080e1c; color: #00f2ff; margin: 0; overflow-x: hidden; }
-        .num-btn { background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); transition: all 0.2s; }
-        .num-btn:active { background: #00f2ff; color: #080e1c; transform: scale(0.95); }
-        .scanner-line { height: 1px; background: linear-gradient(90deg, transparent, #00f2ff, transparent); position: absolute; width: 100%; top: 0; animation: scan 4s linear infinite; pointer-events: none; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        :root {
+            --gold: #d4af37;
+            --bg: #050a0f;
+            --red: #ff3e3e;
+            --green: #00ff41;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #0d1b2a 0%, var(--bg) 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .login-frame {
+            width: 420px;
+            padding: 40px;
+            background: rgba(10, 20, 30, 0.95);
+            border: 1px solid var(--gold);
+            border-radius: 5px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        /* تأثير خطوط المسح الراداري */
+        .login-frame::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--gold);
+            opacity: 0.3;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        h2 { 
+            color: var(--gold); 
+            letter-spacing: 5px; 
+            font-size: 1.5rem; 
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        /* حقل الإدخال - يقبل كل شيء */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        #authCode {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 1px solid #2c3e50;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        #authCode:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-access {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to bottom, #d4af37, #aa8a2e);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .btn-access:active { transform: scale(0.98); }
+
+        #status-msg {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            height: 20px;
+            font-weight: bold;
+        }
+
+        /* تلميح نوع لوحة المفاتيح للأجهزة المحمولة */
+        input::placeholder { font-size: 0.9rem; color: #444; letter-spacing: 0; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen items-center p-4 relative">
-    <div class="scanner-line"></div>
-    <header class="w-full flex justify-between items-center h-16 border-b border-cyan-500/10 mb-8">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-cyan-400">shield_lock</span>
-            <h1 class="text-xs font-bold tracking-[0.2em] uppercase">STRATEGIC COMMAND</h1>
-        </div>
-    </header>
+<body>
 
-    <div class="w-full max-w-sm flex flex-col items-center">
-        <div class="w-32 h-32 mb-6 relative">
-            <div class="absolute inset-0 border border-cyan-500/40 rounded shadow-[0_0_20px_rgba(0,242,255,0.1)]"></div>
-            <img src="https://images.unsplash.com/photo-1590400500058-b3630ae2b520?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover grayscale brightness-75 p-0.5">
-        </div>
-
-        <div class="text-center mb-8 px-4">
-            <h2 class="text-2xl font-black text-cyan-400 leading-tight mb-2 uppercase">العقيد علي العماري</h2>
-            <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest">بوابة الدخول السيادية الشاملة</p>
-        </div>
-
-        <div class="flex justify-center gap-1 mb-10" id="pin-display">
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-1"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-2"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-3"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-4"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-5"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-6"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-7"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-8"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-9"></div>
-            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-10"></div>
-        </div>
-
-        <div class="grid grid-cols-4 gap-2 w-full max-w-[320px]">
-            <button class="num-btn h-12 rounded font-bold" onclick="add('A')">A</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('L')">L</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('I')">I</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('C')">C</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('2')">2</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('0')">0</button>
-            <button class="num-btn h-12 rounded font-bold" onclick="add('6')">6</button>
-            <button class="num-btn h-12 rounded text-red-500" onclick="clearP()"><span class="material-symbols-outlined">backspace</span></button>
-        </div>
-
-        <button class="w-full mt-8 py-4 bg-cyan-400 text-black font-black text-xs uppercase tracking-[0.3em] rounded shadow-[0_0_20px_#00f2ff]" onclick="verify()">Execute Access</button>
+<div class="login-frame">
+    <h2>AEGIS TACTICAL</h2>
+    <p style="color: #666; font-size: 0.75rem; margin-top: -20px; margin-bottom: 30px;">بروتوكول التحقق من الهوية القيادي</p>
+    
+    <div class="input-wrapper">
+        <input type="text" id="authCode" placeholder="أدخل رمز التفويض السيادي" autocomplete="off">
     </div>
+    
+    <button onclick="executeAuth()" class="btn-access">بدء بروتوكول الدخول</button>
 
-    <script>
-        let p = "";
-        const correctCode = "ALIC2A2026";
-        function add(n) { if(p.length < 10) { p += n; update(); } }
-        function clearP() { p = ""; update(); }
-        function update() { for(let i=1; i<=10; i++) document.getElementById('p-'+i).innerText = p[i-1] ? "*" : ""; }
-        
-        function verify() {
-            if(p.toUpperCase() === correctCode) {
-                const msg = "العقيد علي العماري، مرحبا بك في المنظومة السيادية الشاملة. تم منح صلاحيات الوصول.";
-                speak(msg);
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
-            } else {
-                alert("ACCESS DENIED");
-                clearP();
-            }
+    <div id="status-msg"></div>
+</div>
+
+<script>
+    const KEY_SIG = "Alic2A2026";
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        msg.lang = 'ar-SA';
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function executeAuth() {
+        const val = document.getElementById('authCode').value;
+        const status = document.getElementById('status-msg');
+
+        if (val === KEY_SIG) {
+            status.style.color = var(--green);
+            status.innerText = "✓ تم التحقق من الكود الموحد. جاري المصادقة...";
+            speak("أهلاً بك أيها القائد علي العمري. تم تفعيل نظام إيجيس. جاري تحويلك لغرفة العمليات.");
+            
+            setTimeout(() => {
+                window.location.href = "setup.html";
+            }, 3000);
+        } else {
+            status.style.color = var(--red);
+            status.innerText = "✗ خطأ: رمز التفويض غير صحيح.";
+            speak("الوصول مرفوض. تم تسجيل محاولة الدخول غير المصرح بها.");
+            // مسح الحقل لإجبار المستخدم على البدء من جديد
+            document.getElementById('authCode').value = "";
         }
-        function speak(t) { const u = new SpeechSynthesisUtterance(t); u.lang = 'ar-SA'; window.speechSynthesis.speak(u); }
-    </script>
+    }
+
+    // دعم ضغط Enter من لوحة المفاتيح الشاملة
+    document.getElementById('authCode').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') executeAuth();
+    });
+</script>
+
 </body>
 </html>
