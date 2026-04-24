@@ -3,191 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aegis Tactical | نظام التفعيل</title>
+    <title>ضبط النطاق السيادي | AEGIS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --gold: #d4af37;
-            --bg: #050a0f;
-            --panel: rgba(13, 22, 33, 0.95);
-        }
-
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background: var(--bg); color: white;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            overflow: hidden;
-        }
-
-        /* شاشة الترحيب الصوتية والكتابية */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 1s ease;
-        }
-
-        .typing-text {
-            border-left: 2px solid var(--gold);
-            white-space: nowrap;
-            overflow: hidden;
-            width: 0;
-            font-size: 1.5rem;
-            color: var(--gold);
-            animation: typing 3.5s steps(40, end) forwards;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        /* الشاشة الرئيسية بعد الترحيب */
-        #main-dashboard {
-            display: none; /* مخفية في البداية */
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content-area {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* شريط الأزرار السفلي (Bottom Navigation) */
-        .bottom-nav {
-            background: var(--panel);
-            border-top: 2px solid var(--gold);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
-        }
-
-        .nav-btn {
-            background: none;
-            border: 1px solid transparent;
-            color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.3s;
-            flex: 1;
-        }
-
-        .nav-btn:hover {
-            color: var(--gold);
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .nav-btn i {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .nav-label { font-size: 0.85rem; font-weight: bold; }
-
-        /* صندوق الإعدادات */
-        .settings-card {
-            background: var(--panel);
-            border: 1px solid var(--gold);
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 500px;
-            text-align: center;
-        }
+        body { background-color: #050a0f; color: #00f2ff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .cyber-card { background: rgba(13, 19, 33, 0.8); border: 1px solid #00f2ff33; backdrop-filter: blur(10px); }
+        .glow-border { border: 1px solid #00f2ff; box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); }
+        .input-cyber { background: rgba(0, 242, 255, 0.05); border: 1px solid #00f2ff44; color: white; padding: 10px; border-radius: 5px; width: 100%; text-align: center; }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen p-4" onload="initVoice()">
 
-<div id="splash-screen">
-    <div class="typing-text" id="welcome-msg">جاري تحميل منظومة Aegis Tactical... تم تفعيل بروتوكول السيادة.</div>
-    <button onclick="startSystem()" id="start-trigger" style="margin-top: 20px; background: var(--gold); border: none; padding: 10px 20px; cursor: pointer;">دخول النظام</button>
-</div>
-
-<div id="main-dashboard" style="display: none;">
-    <div class="content-area" id="main-display">
-        <div class="settings-card">
-            <h2 style="color: var(--gold);">مرحباً أيها القائد</h2>
-            <p>اختر من القائمة السفلية لبدء العمليات الميدانية.</p>
-        </div>
+    <div class="flex justify-between items-center mb-6 border-b border-cyan-900 pb-2">
+        <span class="text-xs font-bold tracking-widest">Sovereign Geo-Fence v2.0</span>
+        <span class="text-cyan-400">🛡️</span>
     </div>
 
-    <nav class="bottom-nav">
-        <button class="nav-btn" onclick="loadContent('home')">
-            <span class="nav-label">1. الصفحة الرسمية</span>
-        </button>
-        <button class="nav-btn" onclick="loadContent('radar')">
-            <span class="nav-label">2. الدخول للرادار</span>
-        </button>
-        <button class="nav-btn" onclick="loadContent('geo')">
-            <span class="nav-label">3. النطاق الجغرافي</span>
-        </button>
-        <button class="nav-btn" onclick="loadContent('settings')">
-            <span class="nav-label">4. الإعدادات والتعريف</span>
-        </button>
-    </nav>
-</div>
+    <main class="flex-1 flex flex-col gap-6">
+        <div class="cyber-card p-4 rounded-lg text-center">
+            <h1 class="text-xl font-black mb-1">بروتوكول حصر النطاق الميداني</h1>
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest">Field Sector Localization</p>
+        </div>
 
-<script>
-    // وظيفة الترحيب الصوتي
-    function speak(text) {
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = text;
-        msg.lang = 'ar-SA';
-        msg.rate = 0.9; // سرعة هادئة ورسمية
-        window.speechSynthesis.speak(msg);
-    }
+        <div class="cyber-card p-6 rounded-xl flex flex-col gap-4 glow-border">
+            <div>
+                <label class="text-[10px] block mb-2 opacity-70">اسم المنطقة / القطاع</label>
+                <input type="text" id="regionName" class="input-cyber" placeholder="أدخل اسم المنطقة (مثلاً: الضالع)">
+            </div>
 
-    function startSystem() {
-        // تشغيل الصوت
-        speak("تم تشغيل نظام إيجيس تكتيكال. بانتظار الأوامر.");
-        
-        // إخفاء شاشة الترحيب وإظهار الرئيسية
-        document.getElementById('splash-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('splash-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'flex';
-        }, 1000);
-    }
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-[10px] block mb-2 opacity-70">خط العرض (N)</label>
+                    <input type="text" id="lat" class="input-cyber" value="13.9617">
+                </div>
+                <div>
+                    <label class="text-[10px] block mb-2 opacity-70">خط الطول (E)</label>
+                    <input type="text" id="lng" class="input-cyber" value="44.7314">
+                </div>
+            </div>
 
-    // وظيفة التنقل بين الأزرار الأربعة
-    function loadContent(type) {
-        const display = document.getElementById('main-display');
-        let html = '';
+            <div>
+                <label class="text-[10px] block mb-2 opacity-70">المدى العملياتي (كم)</label>
+                <input type="number" id="range" class="input-cyber" value="50">
+            </div>
+        </div>
 
-        switch(type) {
-            case 'home':
-                html = `<div><h2>الصفحة الرسمية</h2><p>بيانات الحالة العامة للمنظومة والوحدات.</p></div>`;
-                break;
-            case 'radar':
-                html = `<div><h2 style="color:red;">الرادار التكتيكي</h2><p>جاري البحث عن الأهداف في المدى الميداني...</p></div>`;
-                break;
-            case 'geo':
-                html = `<div><h2>تحديد النطاق الجغرافي</h2><input type="text" placeholder="أدخل الإحداثيات"></div>`;
-                break;
-            case 'settings':
-                html = `
-                    <div class="settings-card">
-                        <h3 style="color: var(--gold);">التعريف بالمنظومة والمهندس</h3>
-                        <p><strong>المهندس:</strong> العقيد مهندس علي العمري</p>
-                        <p><strong>النظام:</strong> Aegis Tactical V7.2.0</p>
-                        <hr border-color="var(--gold)">
-                        <p style="font-size:0.8rem;">نظام سيادي متكامل للإدارة الميدانية والتحليل الراداري.</p>
-                    </div>`;
-                break;
+        <div class="p-4 bg-red-900/20 border border-red-500/30 rounded-lg text-[11px] text-red-400">
+            <strong>تنبيه سيادي:</strong> ستتوقف المنظومة تلقائياً عن العمل وتفعل بروتوكول التدمير الذاتي للبيانات في حال خروج الجهاز عن النطاق المحدد أعلاه.
+        </div>
+
+        <button onclick="activateFence()" class="mt-auto bg-cyan-600 hover:bg-cyan-500 text-black font-black py-4 rounded-lg shadow-lg transition-all uppercase tracking-widest">
+            تفعيل القفل الجغرافي والربط
+        </button>
+    </main>
+
+    <script>
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'ar-SA';
+            window.speechSynthesis.speak(msg);
         }
-        display.innerHTML = html;
-    }
-</script>
 
+        function initVoice() {
+            // نداء التوجيه للقائد عند فتح الصفحة
+            setTimeout(() => {
+                speak("سيادة العقيد، عليك القيام بضبط المنطقة الجغرافية المحددة ليتم حصر عمل المنظومة في القطاع والمدى الذي تعينه.");
+            }, 1000);
+        }
+
+        function activateFence() {
+            const region = document.getElementById('regionName').value;
+            if(!region) {
+                speak("عذراً سيادة العقيد، يرجى تحديد اسم المنطقة أولاً.");
+                return;
+            }
+            
+            speak(`تم اعتماد النطاق الجغرافي لقطاع ${region}. المنظومة الآن محصورة في هذا المدى. أي خروج عن الإحداثيات سيؤدي للإغلاق الفوري.`);
+            
+            // تخزين البيانات محلياً للمنظومة
+            localStorage.setItem('active_sector', region);
+            
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 4000);
+        }
+    </script>
 </body>
 </html>
