@@ -3,118 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة القيادة الاستراتيجية - SOVEREIGN_OS v7.2.0</title>
+    <title>STRATEGIC DASHBOARD | AEGIS V7.2.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
-        body { font-family: 'Space Grotesk', sans-serif; background-color: #050a14; color: #00f2ff; margin: 0; overflow-x: hidden; padding-bottom: 90px; }
-        .stat-card { background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.1); border-right: 3px solid #00f2ff; transition: 0.3s; }
-        .stat-card:hover { background: rgba(0, 242, 255, 0.08); transform: translateX(-5px); }
-        .sat-link-anim { animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-        .scan-line { height: 1px; background: rgba(0, 242, 255, 0.2); position: absolute; width: 100%; top: 0; animation: scan 10s linear infinite; }
-        @keyframes scan { from { top: 0; } to { top: 100%; } }
+        body { background-color: #020617; color: #00f2ff; font-family: 'Courier New', Courier, monospace; overflow-x: hidden; }
+        .cyber-border { border: 1px solid rgba(0, 242, 255, 0.2); background: rgba(0, 242, 255, 0.03); }
+        .stat-glow { text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+        .unit-card { transition: all 0.3s ease; }
+        .unit-card:active { transform: scale(0.98); background: rgba(0, 242, 255, 0.1); }
+        .active-pulse { animation: pulse-bg 2s infinite; }
+        @keyframes pulse-bg { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
-<body class="p-4" onload="initiateDashboard()">
-    
-    <header class="flex justify-between items-center mb-6 border-b border-cyan-500/10 pb-4 relative">
-        <div class="scan-line"></div>
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full border-2 border-cyan-400 p-0.5 shadow-[0_0_15px_rgba(0,242,255,0.3)]">
-                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover rounded-full grayscale">
-            </div>
-            <div>
-                <h1 class="text-[10px] font-black tracking-widest uppercase">Strategic Dashboard</h1>
-                <div class="text-xs font-bold text-cyan-400">العقيد علي العماري</div>
-            </div>
+<body class="p-4 pb-24" onload="initDashboard()">
+
+    <header class="flex justify-between items-start mb-6 border-b border-cyan-900 pb-4">
+        <div>
+            <h1 class="text-xl font-black tracking-tighter stat-glow uppercase">COMMANDER: ALI AL-OMARI</h1>
+            <p class="text-[10px] text-cyan-500/60 uppercase tracking-widest">RANK: COLONEL (ENGINEER) | 30TH ARMORED BRIGADE</p>
         </div>
-        <div class="flex flex-col items-end">
-            <span class="text-[9px] font-mono opacity-50">SAT_LINK: 300KM</span>
-            <div class="flex items-center gap-1">
-                <span class="w-2 h-2 bg-green-500 rounded-full sat-link-anim"></span>
-                <span class="text-[10px] font-bold text-green-400 uppercase tracking-tighter">Connected</span>
+        <div class="text-right">
+            <div class="text-[9px] font-bold text-green-400 bg-green-900/20 px-2 py-1 rounded border border-green-500/30 uppercase">
+                SYSTEM: SECURE
             </div>
+            <div id="clock" class="text-xs font-mono mt-1 opacity-70">20:35:52</div>
         </div>
     </header>
 
-    <main class="space-y-4">
-        <div class="bg-cyan-950/20 border border-cyan-500/20 p-5 rounded-xl relative overflow-hidden">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <div class="text-[9px] uppercase opacity-60 mb-1">Current Sector / القطاع النشط</div>
-                    <div id="sector-display" class="text-2xl font-black text-white tracking-tighter">WAITING_FOR_DATA...</div>
-                </div>
-                <span class="material-symbols-outlined text-cyan-400 text-3xl">satellite_alt</span>
-            </div>
-            <div class="h-1 bg-cyan-900 rounded-full overflow-hidden">
-                <div class="h-full bg-cyan-400 w-3/4 shadow-[0_0_10px_#00f2ff]"></div>
-            </div>
-            <div class="flex justify-between mt-2 text-[9px] font-mono opacity-50 uppercase">
-                <span>Signal Strength: 88%</span>
-                <span>Uplink Secure</span>
-            </div>
+    <main class="grid grid-cols-2 gap-4">
+        
+        <div onclick="location.href='radar.html'" class="unit-card cyber-border p-4 rounded-xl flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-3xl">radar</span>
+            <span class="text-[10px] font-black uppercase">TACTICAL RADAR</span>
+            <span class="text-[12px] text-green-400 font-bold uppercase">300KM SCAN</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-            <div class="stat-card p-4 rounded-lg" onclick="window.location.href='radar.html'">
-                <span class="material-symbols-outlined text-cyan-400 mb-2">radar</span>
-                <div class="text-[8px] uppercase opacity-60">Radar Range</div>
-                <div class="text-lg font-black">300 KM</div>
-            </div>
-            <div class="stat-card p-4 rounded-lg border-r-red-500" onclick="window.location.href='cyber.html'">
-                <span class="material-symbols-outlined text-red-500 mb-2">bolt</span>
-                <div class="text-[8px] uppercase opacity-60">Offensive Ops</div>
-                <div class="text-lg font-black text-red-400 italic uppercase">Active</div>
-            </div>
+        <div onclick="location.href='jamming.html'" class="unit-card cyber-border p-4 rounded-xl flex flex-col items-center gap-2 border-yellow-500/30">
+            <span class="material-symbols-outlined text-3xl text-yellow-500">sensors_off</span>
+            <span class="text-[10px] font-black uppercase text-yellow-500">JAMMING SYS</span>
+            <span class="text-[12px] text-yellow-400 font-bold uppercase">250KM RANGE</span>
         </div>
 
-        <div class="bg-black/60 border border-cyan-500/10 p-4 rounded-lg font-mono text-[9px] h-32 overflow-y-auto">
-            <div class="text-cyan-600 mb-1">> SYSTEM INITIALIZED...</div>
-            <div class="text-cyan-600 mb-1">> LOADING SOVEREIGN PROTOCOLS... [DONE]</div>
-            <div id="dynamic-log" class="text-white"></div>
+        <div onclick="location.href='cyber.html'" class="unit-card cyber-border p-4 rounded-xl flex flex-col items-center gap-2 border-red-500/30">
+            <span class="material-symbols-outlined text-3xl text-red-600">bolt</span>
+            <span class="text-[10px] font-black uppercase text-red-500">CYBER ATTACK</span>
+            <span class="text-[12px] text-red-400 font-bold uppercase">READY_BREACH</span>
         </div>
+
+        <div onclick="location.href='evolution.html'" class="unit-card cyber-border p-4 rounded-xl flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-3xl animate-spin-slow">psychology</span>
+            <span class="text-[10px] font-black uppercase">EVO_CORE</span>
+            <span class="text-[12px] text-cyan-400 font-bold uppercase">SELF_HEAL</span>
+        </div>
+
     </main>
 
-    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-slate-950/95 backdrop-blur-3xl border-t border-cyan-500/20">
-        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-lg py-2 px-6 shadow-[0_0_20px_#00f2ff]">
-            <span class="material-symbols-outlined">grid_view</span>
-            <span class="text-[10px] uppercase font-black">DASHBOARD</span>
+    <section class="mt-6 space-y-3">
+        <div class="cyber-border p-4 rounded-lg">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-[10px] font-black uppercase tracking-widest">ACTIVE SECTOR / القطاع النشط</span>
+                <span id="current-sector" class="text-xs font-bold text-white uppercase">UNSET</span>
+            </div>
+            <div class="w-full bg-cyan-900/30 h-1 rounded-full overflow-hidden">
+                <div class="bg-cyan-400 h-full w-[88%] active-pulse"></div>
+            </div>
         </div>
-        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center justify-center text-cyan-400/40">
-            <span class="material-symbols-outlined">radar</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Radar</span>
-        </button>
-        <button onclick="window.location.href='evolution.html'" class="flex flex-col items-center justify-center text-cyan-400/40">
-            <span class="material-symbols-outlined">psychology</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Evolution</span>
-        </button>
-        <button onclick="window.location.href='setup.html'" class="flex flex-col items-center justify-center text-cyan-400/40">
-            <span class="material-symbols-outlined">settings</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Setup</span>
+
+        <div class="grid grid-cols-3 gap-2">
+            <div class="cyber-border p-2 rounded text-center">
+                <div class="text-[8px] opacity-50 uppercase">TARGETS</div>
+                <div class="text-sm font-bold">04</div>
+            </div>
+            <div class="cyber-border p-2 rounded text-center">
+                <div class="text-[8px] opacity-50 uppercase">SIGNAL</div>
+                <div class="text-sm font-bold text-green-400">92%</div>
+            </div>
+            <div class="cyber-border p-2 rounded text-center">
+                <div class="text-[8px] opacity-50 uppercase">THREAT</div>
+                <div class="text-sm font-bold text-yellow-500">LOW</div>
+            </div>
+        </div>
+    </section>
+
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-slate-950 border-t border-cyan-500/20">
+        <div class="flex flex-col items-center text-cyan-400 bg-cyan-900/20 px-6 py-2 rounded-lg">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="text-[9px] font-black uppercase">DASHBOARD</span>
+        </div>
+        <button onclick="location.href='setup.html'" class="flex flex-col items-center text-cyan-400/40">
+            <span class="material-symbols-outlined">settings_suggest</span>
+            <span class="text-[9px] font-bold uppercase mt-1">SETUP</span>
         </button>
     </nav>
 
     <script>
-        function initiateDashboard() {
-            // جلب البيانات من التخزين المحلي (التي تم إدخالها في صفحة الإعداد)
-            const region = localStorage.getItem('region') || "القطاع المركزي";
-            const fieldSector = localStorage.getItem('field_sector') || region;
-            
-            document.getElementById('sector-display').innerText = fieldSector;
-            
-            // نداء الترحيب الاستراتيجي
-            const msg = `سيادة العقيد علي العماري، مرحباً بك في لوحة القيادة الاستراتيجية. الربط بالأقمار الصناعية نشط بمدى ثلاثمائة كيلومتر. قطاع ${fieldSector} تحت الرصد الكامل.`;
-            const utterance = new SpeechSynthesisUtterance(msg);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+        function initDashboard() {
+            // استرجاع اسم القطاع من الإعدادات
+            const sector = localStorage.getItem('active_sector') || "CENTRAL_SECTOR";
+            document.getElementById('current-sector').innerText = sector;
 
-            // تحديث السجل الديناميكي
-            setTimeout(() => {
-                document.getElementById('dynamic-log').innerText = `> LINK ESTABLISHED WITH SECTOR: ${fieldSector}\n> SATELLITE RANGE ADJUSTED TO 300KM...`;
-            }, 1500);
+            const msg = `Welcome Commander Ali Al-Omari. Strategic dashboard is online. All systems reporting optimal status.`;
+            speak(msg);
+
+            // تحديث الوقت
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('clock').innerText = now.toTimeString().split(' ')[0];
+            }, 1000);
+        }
+
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'en-US';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
         }
     </script>
 </body>
