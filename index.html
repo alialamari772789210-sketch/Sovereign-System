@@ -3,144 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN ACCESS | العقيد علي العماري</title>
+    <title>AEGIS SOVEREIGN | العقيد علي العماري</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
-        body { background: #020617; color: #00f2ff; font-family: 'Courier New', monospace; overflow: hidden; }
-        .page { display: none; height: 100vh; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #020617; color: #00f2ff; overflow: hidden; margin: 0; }
+        .page { display: none; height: 100vh; overflow-y: auto; padding-bottom: 80px; }
         .active-page { display: block; }
         
-        /* شاشة الدخول الاحترافية (كما في الصورة) */
-        #access-gate { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0b1120; z-index: 9999; position: fixed; inset: 0; padding: 20px; }
-        .key-pad { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; width: 100%; max-width: 400px; }
-        .key { aspect-ratio: 1; background: #1e293b; color: #38bdf8; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 10px; font-weight: bold; cursor: pointer; border: 1px solid #334155; }
-        .key:active { background: #00f2ff; color: #000; }
-        .key-del { background: #451a1a; color: #ff4444; }
+        /* بوابة الوصول */
+        #access-gate { display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle, #0f172a 0%, #020617 100%); z-index: 9999; position: fixed; inset: 0; }
+        .display-unit { border: 2px solid rgba(0, 242, 255, 0.3); background: rgba(0, 242, 255, 0.05); text-shadow: 0 0 10px #00f2ff; box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.1); }
+        .key { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); transition: 0.1s; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 14px; color: #38bdf8; height: 50px; }
+        .key:active { background: #00f2ff; color: #000; transform: scale(0.95); }
+        
+        /* لوحة القيادة المركزية */
+        .stat-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 12px; padding: 1.5rem; }
+        .progress-bar { height: 4px; background: rgba(0, 242, 255, 0.1); border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-fill { height: 100%; background: #00f2ff; width: 88%; box-shadow: 0 0 10px #00f2ff; }
         
         /* الرادار */
-        .radar-box { position: relative; width: 240px; height: 240px; border: 2px solid #00f2ff; border-radius: 50%; margin: 10px auto; background: radial-gradient(circle, #0a2d2d 0%, #020617 85%); }
+        .radar-ring { position: relative; width: 280px; height: 280px; border: 2px solid #00f2ff; border-radius: 50%; margin: 20px auto; background: radial-gradient(circle, #0a2d2d 0%, #020617 85%); }
         .sweeper { position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; background: linear-gradient(to right, transparent, #00f2ff); transform-origin: left; animation: sweep 4s linear infinite; display: none; }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .scanning .sweeper { display: block; }
-        #map { width: 100%; height: 200px; filter: invert(100%) hue-rotate(180deg) brightness(0.6); margin-top: 5px; border-top: 1px solid #00f2ff; }
-        
-        .nav-btn { cursor: pointer; opacity: 0.3; transition: 0.3s; flex: 1; text-align: center; font-size: 9px; padding: 10px 0; }
-        .nav-btn.active { opacity: 1; color: #00f2ff; border-top: 2px solid #00f2ff; background: rgba(0,242,255,0.05); }
+
+        .nav-item { opacity: 0.4; transition: 0.3s; cursor: pointer; color: #94a3b8; }
+        .nav-item.active { opacity: 1; color: #00f2ff; text-shadow: 0 0 8px rgba(0, 242, 255, 0.5); }
     </style>
 </head>
-<body onload="initGate()">
+<body onload="initSystem()">
 
     <div id="access-gate">
-        <h1 class="text-3xl font-bold text-cyan-400 mb-2 mt-4">العقيد علي العماري</h1>
-        <p class="text-[9px] tracking-[3px] text-slate-500 mb-6 uppercase">SOVEREIGN SYSTEM ACCESS GATE</p>
-        
-        <div class="w-full max-w-sm h-16 border-2 border-cyan-500/30 flex items-center justify-center text-xl tracking-[4px] mb-6 bg-black/20" id="display">********</div>
-        
-        <div class="key-pad mb-4">
-            <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div><div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div><div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div><div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div><div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
-            <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div><div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div><div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div><div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div><div class="key" onclick="press('L')">L</div><div class="key key-del" onclick="backspace()">⌫</div>
-            <div class="key" onclick="press('Z')">Z</div><div class="key" onclick="press('X')">X</div><div class="key" onclick="press('C')">C</div><div class="key" onclick="press('V')">V</div><div class="key" onclick="press('B')">B</div><div class="key" onclick="press('N')">N</div><div class="key" onclick="press('M')">M</div><div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div><div class="key" onclick="press('3')">3</div>
-            <div class="key" onclick="press('4')">4</div><div class="key" onclick="press('5')">5</div><div class="key" onclick="press('6')">6</div><div class="key" onclick="press('7')">7</div><div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div><div class="key" onclick="press('0')">0</div>
+        <div class="text-center mb-8">
+            <div class="w-24 h-24 rounded-full border-2 border-cyan-500/50 p-1 mb-4 mx-auto overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1590424753858-3b6112a4c6f4?auto=format&fit=crop&q=80&w=200" class="w-full h-full object-cover rounded-full grayscale hover:grayscale-0 transition-all duration-700" alt="Military Commander">
+            </div>
+            <h1 class="text-3xl font-black tracking-tighter text-cyan-400">العقيد علي العماري</h1>
+            <p class="text-[10px] tracking-[4px] opacity-50 uppercase mt-2">Sovereign System Access Gate</p>
         </div>
-        
-        <button onclick="login()" class="w-full max-w-sm py-4 border-2 border-yellow-500/80 text-yellow-500 font-black text-lg hover:bg-yellow-500/10">ENTER / دخول</button>
+
+        <div id="display" class="w-72 h-16 display-unit mb-6 flex items-center justify-center text-2xl tracking-[6px] font-bold">
+            ********
+        </div>
+
+        <div class="grid grid-cols-5 gap-2 w-full max-w-sm px-4">
+            <div class="key" onclick="k('A')">A</div><div class="key" onclick="k('L')">L</div><div class="key" onclick="k('I')">I</div><div class="key" onclick="k('C')">C</div><div class="key" onclick="k('2')">2</div>
+            <div class="key" onclick="k('0')">0</div><div class="key" onclick="k('6')">6</div><div class="key" onclick="k('B')">B</div><div class="key" onclick="k('D')">D</div><div class="key" onclick="k('E')">E</div>
+            <div class="key col-span-5 bg-red-900/20 text-red-500" onclick="reset()">إعادة تعيين ⌫</div>
+        </div>
+
+        <button onclick="auth()" class="mt-8 w-72 py-4 border-2 border-cyan-500 font-black text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all duration-300 uppercase">دخول / ENTER</button>
     </div>
 
-    <div id="page-main" class="page p-4">
-        <header class="border-b border-cyan-900 pb-2 mb-6 flex justify-between items-center">
-            <span class="text-green-400 text-[10px]">UPLINK: ACTIVE</span>
-            <div class="text-right">
-                <h2 class="text-sm font-bold">STRATEGIC COMMAND</h2>
-                <p class="text-[9px] text-cyan-500">العقيد علي العماري</p>
+    <div id="page-dash" class="page p-6">
+        <header class="flex justify-between items-center mb-8 border-b border-cyan-900/50 pb-4">
+            <div>
+                <div class="text-[10px] text-green-400 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    SAT_LINK: CONNECTED (300KM)
+                </div>
+                <h2 class="text-xl font-bold text-cyan-50">STRATEGIC DASHBOARD</h2>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-right leading-none">العقيد علي العماري<br><span class="text-[9px] opacity-40 uppercase">Commander</span></span>
+                <img src="https://images.unsplash.com/photo-1590424753858-3b6112a4c6f4?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full border border-cyan-500/30 object-cover grayscale">
             </div>
         </header>
-        <div class="bg-cyan-950/20 border border-cyan-500/30 p-6 rounded-2xl">
-            <p class="text-[10px] opacity-60 italic mb-2">OPERATIONAL SECTOR / القطاع النشط</p>
-            <h3 class="text-2xl font-black">قعطبة - الضالع</h3>
-            <div class="mt-4 h-1 bg-cyan-900 rounded-full overflow-hidden">
-                <div class="bg-cyan-400 h-full w-[92%] animate-pulse"></div>
+
+        <div class="stat-card mb-6">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-[10px] opacity-50 uppercase">Current Sector / القطاع النشط</p>
+                    <h3 class="text-3xl font-black text-cyan-400 mt-1">القطاع المركزي - قعطبة</h3>
+                </div>
+                <span class="material-symbols-outlined text-cyan-400 text-4xl">satellite_alt</span>
+            </div>
+            <div class="progress-bar mt-6">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="flex justify-between mt-2 text-[9px] font-bold">
+                <span class="text-cyan-400">UPLINK: SECURE</span>
+                <span class="opacity-60">SIGNAL STRENGTH: 88%</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="stat-card border-red-500/30">
+                <span class="material-symbols-outlined text-red-500 mb-2">bolt</span>
+                <p class="text-[9px] opacity-50 uppercase">Offensive Ops</p>
+                <p class="text-lg font-black text-red-500 italic">ACTIVE</p>
+            </div>
+            <div class="stat-card border-cyan-500/30">
+                <span class="material-symbols-outlined text-cyan-400 mb-2">radar</span>
+                <p class="text-[9px] opacity-50 uppercase">Radar Range</p>
+                <p class="text-lg font-black text-cyan-400">KM 300</p>
+            </div>
+        </div>
+
+        <div class="bg-black/40 rounded-xl p-4 border border-white/5 font-mono text-[10px] text-cyan-500/80 leading-relaxed">
+            <p>...SYSTEM INITIALIZED <</p>
+            <p>LOADING SOVEREIGN PROTOCOLS... [DONE] <</p>
+            <p class="text-cyan-300">القطاع المركزي: LINK ESTABLISHED WITH SECTOR <</p>
+            <p>...SATELLITE RANGE ADJUSTED TO 300KM <</p>
+        </div>
+    </div>
+
+    <div id="page-radar" class="page p-6">
+        <header class="flex justify-between items-center mb-10">
+            <span class="px-2 py-1 bg-red-950 text-red-500 text-[10px] font-bold border border-red-500/30">RANGE: 150KM</span>
+            <h2 class="text-sm font-bold tracking-widest text-cyan-400 uppercase">Sovereign Radar V7.2</h2>
+            <span class="material-symbols-outlined text-cyan-400">target</span>
+        </header>
+        
+        <div id="radarRing" class="radar-ring scanning">
+            <div class="sweeper"></div>
+            <div class="absolute top-1/4 right-1/4 w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_red]"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-12">
+            <div class="stat-card py-4 text-center">
+                <p class="text-[9px] opacity-40 mb-1">TRACKING STATUS</p>
+                <p class="text-red-500 font-bold uppercase">LOCKED</p>
+            </div>
+            <div class="stat-card py-4 text-center">
+                <p class="text-[9px] opacity-40 mb-1">TARGET VELOCITY</p>
+                <p class="text-cyan-400 font-bold uppercase">MACH 2.4</p>
             </div>
         </div>
     </div>
 
-    <div id="page-radar" class="page p-4 text-center">
-        <div class="flex justify-between items-center mb-2 bg-black/40 p-2 rounded border border-cyan-500/20">
-            <span class="text-red-500 text-[10px] font-bold">▲ NORTH / الشمال ▲</span>
-            <div class="flex items-center gap-2">
-                <span class="text-[9px] font-bold uppercase text-cyan-400">RADAR PWR:</span>
-                <input type="checkbox" id="radarSwitch" onchange="toggleRadar()" class="w-5 h-5 accent-cyan-500">
-            </div>
+    <nav id="nav-bar" class="fixed bottom-0 w-full bg-slate-950/95 border-t border-cyan-500/20 hidden justify-around items-center p-4 z-50 backdrop-blur-md">
+        <div onclick="show('dash')" id="nav-dash" class="nav-item flex flex-col items-center">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-[8px] uppercase mt-1">Main</span>
         </div>
-        <div id="radar" class="radar-box"><div class="sweeper"></div></div>
-        <div id="map"></div>
-    </div>
-
-    <nav id="navbar" class="fixed bottom-0 w-full bg-slate-950/98 border-t border-cyan-500/20 hidden flex-row z-50">
-        <div onclick="showPage('main')" id="btn-main" class="nav-btn active">الصفحة الرسمية</div>
-        <div onclick="showPage('radar')" id="btn-radar" class="nav-btn">شاشة الرادار</div>
-        <div onclick="alert('وحدة التشويش قيد التطوير')" class="nav-btn">وحدة التشويش</div>
-        <div onclick="alert('الإعدادات التكتيكية')" class="nav-btn">الإعدادات</div>
+        <div onclick="show('radar')" id="nav-radar" class="nav-item flex flex-col items-center">
+            <span class="material-symbols-outlined">radar</span>
+            <span class="text-[8px] uppercase mt-1">Radar</span>
+        </div>
     </nav>
 
     <script>
-        let inputStr = "";
-        const MASTER_KEY = "ALIC2A2026";
-        let map;
+        let code = "";
+        const MASTER = "Alic2A2026";
 
-        function press(k) { 
-            inputStr += k; 
-            document.getElementById('display').innerText = "*".repeat(inputStr.length);
+        function k(v) { 
+            if(code.length < 10) {
+                code += v; 
+                document.getElementById('display').innerText = "*".repeat(code.length);
+            }
         }
-        function backspace() { 
-            inputStr = inputStr.slice(0, -1); 
-            document.getElementById('display').innerText = "*".repeat(inputStr.length);
+        function reset() { 
+            code = ""; 
+            document.getElementById('display').innerText = "********"; 
         }
-        
-        function login() {
-            if(inputStr === MASTER_KEY) {
-                document.getElementById('access-gate').style.display = 'none';
-                document.getElementById('navbar').style.display = 'flex';
-                showPage('main');
-                speak("سيادة العقيد علي العماري، مرحباً بك في المنظومة السيادية الشاملة. النظام تحت تصرفك الآن.");
+
+        function auth() {
+            if(code === MASTER) {
+                document.getElementById('access-gate').style.fadeOut = "400ms";
+                setTimeout(() => {
+                    document.getElementById('access-gate').style.display = 'none';
+                    document.getElementById('nav-bar').style.display = 'flex';
+                    show('dash');
+                }, 400);
+                speak("تم التحقق من الصلاحية. سيادة العقيد علي العماري، المنظومة تحت تصرفك الآن.");
             } else {
-                speak("خطأ في رمز الدخول. الدخول مرفوض.");
-                inputStr = "";
-                document.getElementById('display').innerText = "ERROR";
-                setTimeout(() => { document.getElementById('display').innerText = "********"; }, 1000);
+                speak("تنبيه، رمز الوصول غير صحيح.");
+                reset();
             }
         }
 
-        function showPage(p) {
-            document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active-page'));
-            document.querySelectorAll('.nav-btn').forEach(bn => bn.classList.remove('active'));
-            document.getElementById('page-' + p).classList.add('active-page');
-            document.getElementById('btn-' + p).classList.add('active');
-            if(p === 'radar' && !map) initMap();
+        function show(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active-page');
+            document.getElementById('nav-' + id).classList.add('active');
         }
 
-        function initMap() {
-            map = L.map('map', { zoomControl: false }).setView([13.84, 44.73], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        }
-
-        function toggleRadar() {
-            const on = document.getElementById('radarSwitch').checked;
-            document.getElementById('radar').classList.toggle('scanning', on);
-            speak(on ? "تم تفعيل الرادار الميداني. جاري المسح." : "تم إغلاق نظام الرصد.");
-        }
-
-        function speak(m) {
-            const u = new SpeechSynthesisUtterance(m);
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
             u.lang = 'ar-SA';
-            u.rate = 0.9;
+            u.rate = 0.85;
             window.speechSynthesis.speak(u);
         }
 
-        function initGate() {
-            document.getElementById('access-gate').style.display = 'flex';
-        }
+        function initSystem() { reset(); }
     </script>
 </body>
 </html>
