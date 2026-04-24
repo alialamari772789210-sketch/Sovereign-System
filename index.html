@@ -10,6 +10,7 @@
             --btn-bg: #162a3d;
             --accent-cyan: #00d4ff;
             --gold: #d4af37;
+            --danger: #ff3e3e;
         }
 
         body {
@@ -20,7 +21,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 20px;
+            padding-top: 15px;
+            height: 100vh;
         }
 
         .header-bar {
@@ -28,61 +30,78 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
-        .commander-logo { width: 120px; margin-bottom: 10px; }
-        
         .commander-name {
             font-size: 1.8rem;
             color: var(--accent-cyan);
-            margin: 10px 0;
             font-weight: bold;
+            margin: 5px 0;
         }
 
         #display-box {
             width: 85%;
-            height: 60px;
-            background: rgba(0,0,0,0.3);
+            height: 55px;
+            background: rgba(0,0,0,0.4);
             border: 2px solid #1a3a5a;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--accent-cyan);
-            letter-spacing: 5px;
+            letter-spacing: 4px;
         }
 
-        /* حاوية لوحة المفاتيح المحدثة */
+        /* لوحة المفاتيح */
         .keyboard-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 5px;
+            gap: 4px;
             width: 95%;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .key {
             background: var(--btn-bg);
             border: 1px solid #1f3d5a;
-            padding: 12px 2px;
+            padding: 12px 0;
             border-radius: 4px;
             text-align: center;
             color: var(--accent-cyan);
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .key:active { background: var(--accent-cyan); color: #000; }
-        .key.del { background: #3d1616; color: #ff3e3e; }
+        .key:active { background: var(--gold); color: #000; }
+        
+        .key.del { background: #3d1616; color: var(--danger); }
+        
+        /* زر الدخول النهائي */
+        .btn-enter {
+            grid-column: span 10;
+            background: linear-gradient(45deg, #0b1622, #1a3a5a);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 95%;
+            text-align: center;
+        }
+
+        .btn-enter:hover { background: var(--gold); color: black; }
 
         .num-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            gap: 4px;
             width: 95%;
         }
     </style>
@@ -90,13 +109,13 @@
 <body>
 
 <div class="header-bar">
-    <span style="color:var(--accent-cyan)">🛡️</span>
-    <span style="letter-spacing: 2px;">SOVEREIGN COMMAND</span>
     <span style="color:var(--accent-cyan)">((•))</span>
+    <span style="letter-spacing: 1px;">SOVEREIGN COMMAND</span>
+    <span style="color:var(--accent-cyan)">🛡️</span>
 </div>
 
-<img src="commander_logo.png" class="commander-logo" alt="Commander"> <div class="commander-name">العقيد علي العماري</div>
-<div style="font-size: 0.7rem; color: #666; margin-bottom: 15px;">SOVEREIGN SYSTEM ACCESS GATE</div>
+<div class="commander-name">العقيد علي العماري</div>
+<div style="font-size: 0.7rem; color: #555; margin-bottom: 15px;">SOVEREIGN SYSTEM ACCESS GATE</div>
 
 <div id="display-box">********</div>
 
@@ -106,23 +125,19 @@
     <div class="key" onclick="add('T')">T</div><div class="key" onclick="add('Y')">Y</div>
     <div class="key" onclick="add('U')">U</div><div class="key" onclick="add('I')">I</div>
     <div class="key" onclick="add('O')">O</div><div class="key" onclick="add('P')">P</div>
-</div>
-
-<div class="keyboard-grid">
-    <div class="key del" onclick="back()">⌫</div>
+    
     <div class="key" onclick="add('A')">A</div><div class="key" onclick="add('S')">S</div>
     <div class="key" onclick="add('D')">D</div><div class="key" onclick="add('F')">F</div>
     <div class="key" onclick="add('G')">G</div><div class="key" onclick="add('H')">H</div>
     <div class="key" onclick="add('J')">J</div><div class="key" onclick="add('K')">K</div>
-    <div class="key" onclick="add('L')">L</div>
-</div>
+    <div class="key" onclick="add('L')">L</div><div class="key del" onclick="back()">⌫</div>
 
-<div class="keyboard-grid">
-    <div style="grid-column: span 1.5;"></div> <div class="key" onclick="add('Z')">Z</div><div class="key" onclick="add('X')">X</div>
+    <div style="grid-column: span 1;"></div>
+    <div class="key" onclick="add('Z')">Z</div><div class="key" onclick="add('X')">X</div>
     <div class="key" onclick="add('C')">C</div><div class="key" onclick="add('V')">V</div>
     <div class="key" onclick="add('B')">B</div><div class="key" onclick="add('N')">N</div>
     <div class="key" onclick="add('M')">M</div>
-    <div style="grid-column: span 1.5;"></div>
+    <div style="grid-column: span 2;"></div>
 </div>
 
 <div class="num-grid">
@@ -134,32 +149,52 @@
     <div class="key" onclick="add('0')">0</div>
 </div>
 
+<div class="btn-enter" onclick="validate()">ENTER / دخول</div>
+
 <script>
-    let code = "";
-    const SECRET = "Alic2A2026";
+    let codeInput = "";
+    const MASTER_KEY = "Alic2A2026";
 
     function add(char) {
-        code += char;
-        document.getElementById('display-box').innerText = "*".repeat(code.length);
-        if(code === SECRET) {
-            validate();
+        if(codeInput.length < 15) {
+            codeInput += char;
+            updateDisplay();
         }
     }
 
     function back() {
-        code = code.slice(0, -1);
-        document.getElementById('display-box').innerText = "*".repeat(code.length) || "********";
+        codeInput = codeInput.slice(0, -1);
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        document.getElementById('display-box').innerText = "*".repeat(codeInput.length) || "********";
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA';
+        window.speechSynthesis.speak(msg);
     }
 
     function validate() {
-        const msg = new SpeechSynthesisUtterance("تم التحقق. أهلاً بك أيها القائد علي العمري.");
-        msg.lang = 'ar-SA';
-        window.speechSynthesis.speak(msg);
-        
-        document.getElementById('display-box').style.borderColor = "#00ff41";
-        setTimeout(() => {
-            window.location.href = "dashboard.html";
-        }, 2500);
+        if (codeInput === MASTER_KEY) {
+            speak("أهلاً بك أيها القائد علي العمري. تم تفعيل نظام إيجيس تكتيكال.");
+            document.getElementById('display-box').style.borderColor = "#00ff41";
+            document.getElementById('display-box').style.color = "#00ff41";
+            
+            setTimeout(() => {
+                window.location.href = "setup.html"; // سينقلك للشاشة الرئيسية
+            }, 2000);
+        } else {
+            speak("رمز الدخول خاطئ. الوصول مرفوض.");
+            codeInput = "";
+            updateDisplay();
+            document.getElementById('display-box').style.borderColor = "var(--danger)";
+            setTimeout(() => {
+                document.getElementById('display-box').style.borderColor = "#1a3a5a";
+            }, 1000);
+        }
     }
 </script>
 
