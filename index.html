@@ -3,51 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN ACCESS | AEGIS</title>
+    <title>بوابة الدخول السيادية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
-        :root { --bg: #0b1622; --cyan: #00d4ff; --gold: #d4af37; --btn: #162a3d; }
-        body { background: var(--bg); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 20px; overflow: hidden; text-transform: uppercase; }
-        .commander-name { font-size: 2rem; color: var(--cyan); font-weight: bold; margin: 10px 0; }
-        #display-box { width: 85%; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid #1a3a5a; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--cyan); letter-spacing: 5px; }
-        .kb-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 6px; width: 95%; }
-        .key { background: var(--btn); border: 1px solid #1f3d5a; flex: 1; padding: 15px 0; border-radius: 4px; text-align: center; color: var(--cyan); font-weight: bold; cursor: pointer; }
-        .key:active { background: var(--cyan); color: #000; }
-        .key.del { background: #3d1616; color: #ff3e3e; flex: 1.5; }
-        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; width: 95%; margin-top: 10px; }
-        .enter-btn { background: linear-gradient(45deg, #0b1622, #1a3a5a); border: 2px solid var(--gold); color: var(--gold); padding: 18px; margin-top: 20px; font-weight: bold; letter-spacing: 5px; border-radius: 5px; width: 95%; text-align: center; }
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #080e1c; color: #00f2ff; margin: 0; overflow-x: hidden; }
+        .num-btn { background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); transition: all 0.2s; }
+        .num-btn:active { background: #00f2ff; color: #080e1c; transform: scale(0.95); }
+        .scanner-line { height: 1px; background: linear-gradient(90deg, transparent, #00f2ff, transparent); position: absolute; width: 100%; top: 0; animation: scan 4s linear infinite; pointer-events: none; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
     </style>
 </head>
-<body>
-    <div class="commander-name">العقيد علي العماري</div>
-    <div style="font-size:0.7rem; color:#555; margin-bottom:20px;">SOVEREIGN SYSTEM ACCESS GATE</div>
-    <div id="display-box">********</div>
-    <div class="kb-row">
-        <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div><div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div><div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div><div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div><div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
+<body class="flex flex-col min-h-screen items-center p-4 relative">
+    <div class="scanner-line"></div>
+    <header class="w-full flex justify-between items-center h-16 border-b border-cyan-500/10 mb-8">
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400">shield_lock</span>
+            <h1 class="text-xs font-bold tracking-[0.2em] uppercase">STRATEGIC COMMAND</h1>
+        </div>
+    </header>
+
+    <div class="w-full max-w-sm flex flex-col items-center">
+        <div class="w-32 h-32 mb-6 relative">
+            <div class="absolute inset-0 border border-cyan-500/40 rounded shadow-[0_0_20px_rgba(0,242,255,0.1)]"></div>
+            <img src="https://images.unsplash.com/photo-1590400500058-b3630ae2b520?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover grayscale brightness-75 p-0.5">
+        </div>
+
+        <div class="text-center mb-8 px-4">
+            <h2 class="text-2xl font-black text-cyan-400 leading-tight mb-2 uppercase">العقيد علي العماري</h2>
+            <p class="text-[10px] font-bold opacity-80 uppercase tracking-widest">بوابة الدخول السيادية الشاملة</p>
+        </div>
+
+        <div class="flex justify-center gap-1 mb-10" id="pin-display">
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-1"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-2"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-3"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-4"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-5"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-6"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-7"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-8"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-9"></div>
+            <div class="w-6 h-8 border-b-2 border-cyan-500/40 flex items-center justify-center text-lg font-bold" id="p-10"></div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2 w-full max-w-[320px]">
+            <button class="num-btn h-12 rounded font-bold" onclick="add('A')">A</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('L')">L</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('I')">I</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('C')">C</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('2')">2</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('0')">0</button>
+            <button class="num-btn h-12 rounded font-bold" onclick="add('6')">6</button>
+            <button class="num-btn h-12 rounded text-red-500" onclick="clearP()"><span class="material-symbols-outlined">backspace</span></button>
+        </div>
+
+        <button class="w-full mt-8 py-4 bg-cyan-400 text-black font-black text-xs uppercase tracking-[0.3em] rounded shadow-[0_0_20px_#00f2ff]" onclick="verify()">Execute Access</button>
     </div>
-    <div class="kb-row">
-        <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div><div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div><div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div><div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div><div class="key" onclick="press('L')">L</div><div class="key del" onclick="back()">⌫</div>
-    </div>
-    <div class="kb-row">
-        <div class="key" onclick="press('Z')">Z</div><div class="key" onclick="press('X')">X</div><div class="key" onclick="press('C')">C</div><div class="key" onclick="press('V')">V</div><div class="key" onclick="press('B')">B</div><div class="key" onclick="press('N')">N</div><div class="key" onclick="press('M')">M</div>
-    </div>
-    <div class="num-grid">
-        <div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div><div class="key" onclick="press('3')">3</div><div class="key" onclick="press('4')">4</div><div class="key" onclick="press('5')">5</div>
-        <div class="key" onclick="press('6')">6</div><div class="key" onclick="press('7')">7</div><div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div><div class="key" onclick="press('0')">0</div>
-    </div>
-    <div class="enter-btn" onclick="verify()">ENTER / دخول</div>
+
     <script>
-        let code = "";
-        const MASTER = "ALIC2A2026";
-        function press(c) { if(code.length<10) { code+=c; update(); } }
-        function back() { code=code.slice(0,-1); update(); }
-        function update() { document.getElementById('display-box').innerText = "*".repeat(code.length) || "********"; }
+        let p = "";
+        const correctCode = "ALIC2A2026";
+        function add(n) { if(p.length < 10) { p += n; update(); } }
+        function clearP() { p = ""; update(); }
+        function update() { for(let i=1; i<=10; i++) document.getElementById('p-'+i).innerText = p[i-1] ? "*" : ""; }
+        
         function verify() {
-            if(code === MASTER) {
-                const m = new SpeechSynthesisUtterance("أهلاً بك أيها القائد علي العمري. تم تفعيل نظام إيجيس.");
-                m.lang = 'ar-SA'; window.speechSynthesis.speak(m);
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 2000);
-            } else { alert("ACCESS DENIED"); code=""; update(); }
+            if(p.toUpperCase() === correctCode) {
+                const msg = "العقيد علي العماري، مرحبا بك في المنظومة السيادية الشاملة. تم منح صلاحيات الوصول.";
+                speak(msg);
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
+            } else {
+                alert("ACCESS DENIED");
+                clearP();
+            }
         }
+        function speak(t) { const u = new SpeechSynthesisUtterance(t); u.lang = 'ar-SA'; window.speechSynthesis.speak(u); }
     </script>
 </body>
 </html>
