@@ -3,50 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOVEREIGN ACCESS | AEGIS</title>
+    <title>AEGIS SOVEREIGN CONTROL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        :root { --bg: #0b1622; --cyan: #00d4ff; --gold: #d4af37; --btn: #162a3d; }
-        body { background: var(--bg); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 20px; overflow: hidden; text-transform: uppercase; }
-        .commander-name { font-size: 2rem; color: var(--cyan); font-weight: bold; margin: 10px 0; }
-        #display-box { width: 85%; height: 60px; background: rgba(0,0,0,0.5); border: 2px solid #1a3a5a; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--cyan); letter-spacing: 5px; }
-        .kb-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 6px; width: 95%; }
-        .key { background: var(--btn); border: 1px solid #1f3d5a; flex: 1; padding: 15px 0; border-radius: 4px; text-align: center; color: var(--cyan); font-weight: bold; cursor: pointer; }
-        .key:active { background: var(--cyan); color: #000; }
-        .key.del { background: #3d1616; color: #ff3e3e; flex: 1.5; }
-        .num-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; width: 95%; margin-top: 10px; }
-        .enter-btn { background: linear-gradient(45deg, #0b1622, #1a3a5a); border: 2px solid var(--gold); color: var(--gold); padding: 18px; margin-top: 20px; font-weight: bold; letter-spacing: 5px; border-radius: 5px; width: 95%; text-align: center; }
+        body { background: #020617; color: #00f2ff; font-family: 'Courier New', monospace; overflow: hidden; }
+        .page { display: none; height: 100vh; padding-bottom: 80px; overflow-y: auto; }
+        .active-page { display: block; }
+        
+        /* تصميم الرادار */
+        .radar-box { position: relative; width: 260px; height: 260px; border: 2px solid #00f2ff; border-radius: 50%; margin: 10px auto; background: radial-gradient(circle, #0a2d2d 0%, #020617 85%); }
+        .sweeper { position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; background: linear-gradient(to right, transparent, #00f2ff); transform-origin: left; animation: sweep 4s linear infinite; display: none; }
+        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .scanning .sweeper { display: block; }
+        
+        #map { width: 100%; height: 200px; filter: invert(100%) hue-rotate(180deg) brightness(0.6); margin-top: 10px; }
+        .nav-btn { transition: 0.3s; color: rgba(0, 242, 255, 0.4); }
+        .nav-btn.active { color: #00f2ff; transform: translateY(-5px); }
     </style>
 </head>
-<body>
-    <div class="commander-name">العقيد علي العماري</div>
-    <div style="font-size:0.7rem; color:#555; margin-bottom:20px;">SOVEREIGN SYSTEM ACCESS GATE</div>
-    <div id="display-box">********</div>
-    <div class="kb-row">
-        <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div><div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div><div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div><div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div><div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
+<body onload="initSystem()">
+
+    <div id="page-dashboard" class="page active-page p-4">
+        <header class="flex justify-between items-center mb-6 border-b border-cyan-900 pb-2">
+            <div>
+                <h1 class="text-sm font-black uppercase">STRATEGIC COMMAND</h1>
+                <p class="text-[9px] text-cyan-500 uppercase">COLONEL: ALI AL-OMARI</p>
+            </div>
+            <div class="text-[10px] text-green-400 font-bold uppercase">UPLINK: ACTIVE</div>
+        </header>
+
+        <div class="grid grid-cols-1 gap-4">
+            <div class="bg-cyan-950/20 border border-cyan-500/30 p-4 rounded-xl">
+                <p class="text-[10px] opacity-50 uppercase">CURRENT SECTOR / القطاع النشط</p>
+                <h2 id="dash-sector" class="text-xl font-bold">قعطبة - الضالع</h2>
+                <div class="w-full bg-cyan-900 h-1 mt-2"><div class="bg-cyan-400 h-full w-[88%]"></div></div>
+            </div>
+        </div>
     </div>
-    <div class="kb-row">
-        <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div><div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div><div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div><div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div><div class="key" onclick="press('L')">L</div><div class="key del" onclick="back()">⌫</div>
+
+    <div id="page-radar" class="page p-4 text-center">
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-red-500 text-xs font-bold uppercase">▲ NORTH / الشمال ▲</span>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px]">RADAR:</span>
+                <input type="checkbox" id="radarMaster" onchange="toggleRadar()" class="w-5 h-5">
+            </div>
+        </div>
+        
+        <div id="radar" class="radar-box"><div class="sweeper"></div></div>
+        <div id="map"></div>
     </div>
-    <div class="kb-row">
-        <div class="key" onclick="press('Z')">Z</div><div class="key" onclick="press('X')">X</div><div class="key" onclick="press('C')">C</div><div class="key" onclick="press('V')">V</div><div class="key" onclick="press('B')">B</div><div class="key" onclick="press('N')">N</div><div class="key" onclick="press('M')">M</div>
+
+    <div id="page-jamming" class="page p-4">
+        <h2 class="text-center text-purple-400 font-bold mb-4">ELECTRONIC WARFARE UNIT</h2>
+        <button onclick="toggleJamming()" id="jamBtn" class="w-full py-8 border-2 border-purple-500 rounded-xl text-lg font-black bg-purple-900/10">
+            تفعيل التشويش الشامل (250KM)
+        </button>
     </div>
-    <div class="num-grid">
-        <div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div><div class="key" onclick="press('3')">3</div><div class="key" onclick="press('4')">4</div><div class="key" onclick="press('5')">5</div>
-        <div class="key" onclick="press('6')">6</div><div class="key" onclick="press('7')">7</div><div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div><div class="key" onclick="press('0')">0</div>
-    </div>
-    <div class="enter-btn" onclick="verify()">ENTER / دخول</div>
+
+    <nav class="fixed bottom-0 w-full bg-slate-950/90 backdrop-blur-md border-t border-cyan-500/20 flex justify-around p-4">
+        <div onclick="showPage('dashboard')" id="btn-dashboard" class="nav-btn active flex flex-col items-center">
+            <span class="text-[10px] font-bold uppercase">MAIN</span>
+        </div>
+        <div onclick="showPage('radar')" id="btn-radar" class="nav-btn flex flex-col items-center">
+            <span class="text-[10px] font-bold uppercase">RADAR</span>
+        </div>
+        <div onclick="showPage('jamming')" id="btn-jamming" class="nav-btn flex flex-col items-center">
+            <span class="text-[10px] font-bold uppercase">JAMMING</span>
+        </div>
+    </nav>
+
     <script>
-        let code = "";
-        const MASTER = "ALIC2A2026";
-        function press(c) { if(code.length<10) { code+=c; update(); } }
-        function back() { code=code.slice(0,-1); update(); }
-        function update() { document.getElementById('display-box').innerText = "*".repeat(code.length) || "********"; }
-        function verify() {
-            if(code === MASTER) {
-                const m = new SpeechSynthesisUtterance("أهلاً بك أيها القائد علي العمري. تم تفعيل نظام إيجيس.");
-                m.lang = 'ar-SA'; window.speechSynthesis.speak(m);
-                setTimeout(() => { window.location.href = "dashboard.html"; }, 2000);
-            } else { alert("ACCESS DENIED"); code=""; update(); }
+        let isRadarOn = false;
+        let map;
+
+        function showPage(pageId) {
+            // تنقل فوري بدون تحميل الصفحة
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active-page');
+            document.getElementById('btn-' + pageId).classList.add('active');
+            
+            if(pageId === 'radar' && !map) initMap();
+        }
+
+        function initSystem() {
+            speak("نظام التنبيه الجغرافي جاهز يا سيادة العقيد.");
+        }
+
+        function initMap() {
+            map = L.map('map', { zoomControl: false }).setView([13.84, 44.73], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        }
+
+        function toggleRadar() {
+            isRadarOn = document.getElementById('radarMaster').checked;
+            const r = document.getElementById('radar');
+            if(isRadarOn) {
+                r.classList.add('scanning');
+                speak("تم تفعيل الرادار. المسح الميداني مستمر حتى عند التنقل.");
+            } else {
+                r.classList.remove('scanning');
+            }
+        }
+
+        function toggleJamming() {
+            speak("تم تفعيل بروتوكول التشويش فوق منطقة قعطبة.");
+            document.getElementById('jamBtn').classList.toggle('bg-red-900/40');
+        }
+
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'ar-SA';
+            window.speechSynthesis.speak(u);
         }
     </script>
 </body>
