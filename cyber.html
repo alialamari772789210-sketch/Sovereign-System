@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بروتوكول الهجوم السيبراني - المنظومة السيادية</title>
+    <title>بروتوكول الهجوم السيبراني المحدث - المنظومة السيادية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -33,50 +33,51 @@
             50% { text-shadow: -1px 0 0 red, 1px 0 0 blue; }
             100% { text-shadow: 1px 0 0 red, -1px 0 0 blue; }
         }
+        .breach-active {
+            animation: pulse-red 0.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { background-color: rgba(255, 62, 62, 0); }
+            50% { background-color: rgba(255, 62, 62, 0.1); }
+            100% { background-color: rgba(255, 62, 62, 0); }
+        }
     </style>
 </head>
-<body class="cyber-red-grid min-h-screen flex flex-col p-6">
+<body class="cyber-red-grid min-h-screen flex flex-col p-6" id="main-body">
     <header class="flex justify-between items-center mb-8 border-b border-red-500/30 pb-4">
         <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-red-500">terminal</span>
-            <h1 class="text-xs font-black tracking-widest uppercase">CYBER OFFENSIVE PROTOCOL</h1>
+            <h1 class="text-xs font-black tracking-widest uppercase">CYBER OFFENSIVE PROTOCOL v2.0</h1>
         </div>
-        <div class="text-[10px] font-bold text-red-500 animate-pulse">STATUS: READY TO BREACH</div>
+        <div id="status-indicator" class="text-[10px] font-bold text-red-500">STATUS: STANDBY</div>
     </header>
 
     <main class="flex-1 flex flex-col gap-6">
         <div class="attack-terminal p-4 rounded border-r-4 border-red-600">
             <label class="text-[10px] uppercase font-bold opacity-70 block mb-2">تعريف الهدف / TARGET IP-DNS</label>
-            <input type="text" placeholder="0.0.0.0 / encrypted_node" class="bg-transparent border-b border-red-500/30 outline-none w-full py-2 text-xl font-mono text-red-400">
+            <input type="text" id="target-input" placeholder="0.0.0.0 / encrypted_node" class="bg-transparent border-b border-red-500/30 outline-none w-full py-2 text-xl font-mono text-red-400">
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
-                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">leak_add</span>
-                <span class="text-[10px] font-bold">Infiltration / تسلل</span>
+            <button class="attack-terminal p-4 rounded flex flex-col items-center gap-2 hover:bg-red-950/30 transition-all">
+                <span class="material-symbols-outlined text-2xl">leak_add</span>
+                <span class="text-[9px] font-bold uppercase">Infiltration</span>
             </button>
-            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
-                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">key_visualizer</span>
-                <span class="text-[10px] font-bold">Decryption / فك التشفير</span>
-            </button>
-            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
-                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">cell_tower</span>
-                <span class="text-[10px] font-bold">Signal Jam / تشويش</span>
-            </button>
-            <button class="attack-terminal p-6 rounded flex flex-col items-center gap-3 hover:bg-red-950/30 transition-all group">
-                <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">shield_person</span>
-                <span class="text-[10px] font-bold">Ghost Mode / وضع الشبح</span>
+            <button class="attack-terminal p-4 rounded flex flex-col items-center gap-2 hover:bg-red-950/30 transition-all">
+                <span class="material-symbols-outlined text-2xl">key_visualizer</span>
+                <span class="text-[9px] font-bold uppercase">Decryption</span>
             </button>
         </div>
 
-        <div class="attack-terminal flex-1 p-4 rounded font-mono text-[10px] overflow-hidden relative">
-            <div class="opacity-40 mb-2">LOG_SESSION_INITIATED...</div>
-            <div class="text-red-400 mb-1">> BYPASSING FIREWALL... [SUCCESS]</div>
-            <div class="text-red-400 mb-1">> EXTRACTING NODE DATA... [PENDING]</div>
-            <div class="text-white/20 absolute bottom-4 left-4 glitch-text uppercase font-bold">Sovereign_Control_Active</div>
+        <div class="attack-terminal flex-1 p-4 rounded font-mono text-[10px] overflow-hidden relative min-h-[150px]">
+            <div id="terminal-logs">
+                <div class="opacity-40 mb-1">SYSTEM_READY...</div>
+                <div class="opacity-40 mb-1">WAITING FOR COMMAND...</div>
+            </div>
+            <div class="text-white/10 absolute bottom-4 left-4 glitch-text uppercase font-bold text-[8px]">SOVEREIGN_OFFENSIVE_UNIT</div>
         </div>
 
-        <button class="w-full py-5 bg-red-600 text-black font-black text-sm uppercase tracking-[0.3em] shadow-[0_0_30px_rgba(255,62,62,0.3)] rounded hover:brightness-125 transition-all">
+        <button id="execute-btn" onclick="initiateBreach()" class="w-full py-5 bg-red-600 text-black font-black text-sm uppercase tracking-[0.3em] shadow-[0_0_30px_rgba(255,62,62,0.3)] rounded hover:brightness-125 transition-all">
             EXECUTE BREACH / تنفيذ الاختراق
         </button>
     </main>
@@ -95,5 +96,44 @@
             <span class="text-[10px] uppercase font-bold">RADAR</span>
         </button>
     </nav>
+
+    <script>
+        function initiateBreach() {
+            const target = document.getElementById('target-input').value || "UNKNOWN_NODE";
+            const status = document.getElementById('status-indicator');
+            const logs = document.getElementById('terminal-logs');
+            const body = document.getElementById('main-body');
+
+            // 1. تحديث الحالة البصرية
+            status.innerText = "STATUS: BREACH IN PROGRESS";
+            status.classList.add('animate-pulse');
+            body.classList.add('breach-active');
+
+            // 2. النداء الصوتي الاستباقي
+            const alertMsg = `تنبيه، تم تفعيل بروتوكول الهجوم السيبراني السيادي. جاري اختراق الهدف ${target}. السيطرة الكاملة قيد التنفيذ.`;
+            const utterance = new SpeechSynthesisUtterance(alertMsg);
+            utterance.lang = 'ar-SA';
+            utterance.rate = 1.0;
+            utterance.pitch = 0.8; // نبرة عميقة وأكثر جدية
+            window.speechSynthesis.speak(utterance);
+
+            // 3. محاكاة سجلات الاختراق في التيرمينال
+            const steps = [
+                `> INITIALIZING ATTACK VECTORS ON: ${target}`,
+                `> BYPASSING LAYER 1 FIREWALL...`,
+                `> INJECTING EXPLOIT PACKAGE...`,
+                `> ACCESS GRANTED. ESTABLISHING PERSISTENCE...`
+            ];
+
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = "text-red-400 mb-1 font-bold";
+                    line.innerText = step;
+                    logs.appendChild(line);
+                }, (index + 1) * 1500);
+            });
+        }
+    </script>
 </body>
 </html>
