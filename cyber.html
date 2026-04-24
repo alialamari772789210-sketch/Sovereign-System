@@ -3,155 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بروتوكول الهجوم السيبراني - النسخة السيادية الموحدة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>CYBER ATTACK PROTOCOL | AEGIS V7.2.5</title>
     <style>
-        body { 
-            font-family: 'Space Grotesk', sans-serif; 
-            background-color: #0a0202; 
-            color: #ff3e3e; 
-            margin: 0; 
+        :root {
+            --neon-red: #ff0000;
+            --dark-red: #440000;
+            --gold: #d4af37;
+            --bg: #050000;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--neon-red);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
             overflow: hidden;
+            text-transform: uppercase;
         }
-        .cyber-grid {
-            background-image: linear-gradient(rgba(255, 62, 62, 0.03) 1px, transparent 1px), 
-                              linear-gradient(90deg, rgba(255, 62, 62, 0.03) 1px, transparent 1px);
-            background-size: 25px 25px;
+
+        .cyber-vault {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            border: 2px solid var(--neon-red);
+            margin: 10px;
+            box-shadow: inset 0 0 50px var(--dark-red);
         }
-        .terminal-box {
-            background: rgba(15, 5, 5, 0.9);
-            border: 1px solid rgba(255, 62, 62, 0.2);
-            box-shadow: inset 0 0 20px rgba(255, 62, 62, 0.05);
+
+        .header-warning {
+            font-size: 1.5rem;
+            color: var(--neon-red);
+            text-shadow: 0 0 15px var(--neon-red);
+            margin-bottom: 20px;
+            text-align: center;
+            animation: flicker 0.5s infinite;
         }
-        .status-pulse {
-            animation: pulse-red 1.5s infinite;
+
+        @keyframes flicker {
+            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; }
         }
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 62, 62, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 62, 62, 0); }
+
+        .terminal-feed {
+            width: 85%;
+            height: 250px;
+            background: black;
+            border: 1px solid var(--dark-red);
+            padding: 15px;
+            font-size: 0.75rem;
+            overflow-y: auto;
+            color: #00ff41;
         }
-        .breach-effect {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(255,0,0,0.05) 0px, transparent 2px);
-            pointer-events: none;
+
+        .progress-bar-container {
+            width: 85%;
+            height: 25px;
+            border: 1px solid var(--gold);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red);
+            transition: width 0.1s;
+        }
+
+        .btn-attack {
+            margin-top: 30px;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 15px 40px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 85%;
+            transition: 0.3s;
+        }
+
+        .btn-attack:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .nav-fixed {
+            position: fixed;
+            bottom: 0; width: 100%;
+            display: flex; justify-content: space-around;
+            padding: 15px 0; background: #000;
+            border-top: 1px solid var(--gold);
         }
     </style>
 </head>
-<body class="cyber-grid min-h-screen flex flex-col p-6" onload="bootAttackProtocol()">
+<body>
 
-    <header class="flex justify-between items-center mb-8 border-b border-red-600/30 pb-4">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-red-600 scale-125">key_visualizer</span>
-            <div>
-                <h1 class="text-xs font-black tracking-[0.3em] uppercase text-red-500">Cyber Offensive Unit</h1>
-                <div class="text-[9px] font-mono text-red-600/60 uppercase">Absolute Control Protocol v7.2.5</div>
-            </div>
+<div class="cyber-vault" id="main-vault">
+    <div class="header-warning" id="status-title">☢️ PROTOCOL: ABSOLUTE CONTROL ☢️</div>
+    
+    <div id="sector-display" style="color: var(--gold); font-size: 0.7rem; margin-bottom: 10px;">
+        القطاع النشط: جاري الفحص...
+    </div>
+
+    <div class="terminal-feed" id="terminal">
+        > SYSTEM BOOT...<br>
+        > WAITING FOR COMMANDER AUTHORIZATION...<br>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-fill" id="p-fill"></div>
+        <div style="position: absolute; top: 4px; left: 50%; transform: translateX(-50%); color: white; font-size: 0.7rem;">
+            DOMINATION: <span id="p-text">0%</span>
         </div>
-        <div id="lock-status" class="px-3 py-1 bg-red-950/40 border border-red-600/30 rounded text-[9px] font-black tracking-widest text-white">
-            LINK: DISCONNECTED
-        </div>
-    </header>
+    </div>
 
-    <main class="flex-1 flex flex-col gap-6 max-w-lg mx-auto w-full relative">
-        <div class="breach-effect"></div>
+    <button class="btn-attack" id="attackBtn" onclick="launchAttack()">EXECUTE CYBER STRIKE</button>
+</div>
 
-        <div class="terminal-box p-5 rounded-xl border-r-4 border-red-600">
-            <label class="text-[10px] uppercase font-bold opacity-50 mb-2 block tracking-widest">تحديد الهدف السيبراني / Target Node</label>
-            <div class="flex gap-3">
-                <input type="text" id="target-node" placeholder="IP / DOMAIN / HOST" class="bg-red-600/5 border border-red-600/30 outline-none w-full p-3 text-lg font-mono text-red-500 rounded placeholder:text-red-900/50">
-            </div>
-        </div>
+<nav class="nav-fixed">
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='dashboard.html'">1. الرئيسية</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='radar.html'">2. الرادار</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='setup.html'">3. الإعدادات</div>
+</nav>
 
-        <div class="grid grid-cols-2 gap-3">
-            <div onclick="selectOp('Infiltration')" class="terminal-box p-4 rounded flex flex-col items-center gap-2 cursor-pointer hover:bg-red-600/10 transition-all border border-red-600/20">
-                <span class="material-symbols-outlined text-3xl">leak_add</span>
-                <span class="text-[9px] font-black uppercase">Infiltration</span>
-            </div>
-            <div onclick="selectOp('Signal Override')" class="terminal-box p-4 rounded flex flex-col items-center gap-2 cursor-pointer hover:bg-red-600/10 transition-all border border-red-600/20">
-                <span class="material-symbols-outlined text-3xl">settings_input_antenna</span>
-                <span class="text-[9px] font-black uppercase">Override</span>
-            </div>
-        </div>
+<script>
+    const logs = [
+        "> ACCESSING ENCRYPTED NODES...",
+        "> INJECTING AEGIS VIRUS...",
+        "> DISABLING LOCAL COMMAND...",
+        "> ENEMY SYSTEM OVERRIDE: SUCCESS",
+        "> EXTRACTING DATA PACKETS...",
+        "> SOVEREIGN CONTROL ESTABLISHED"
+    ];
 
-        <div class="terminal-box flex-1 p-4 rounded-lg font-mono text-[10px] overflow-hidden flex flex-col">
-            <div id="output-stream" class="space-y-1 opacity-80">
-                <div class="text-red-600/50">> AWAITING COMMAND AUTHORIZATION...</div>
-            </div>
-        </div>
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA'; // التنبيه باللغة العربية كما طلبت
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+    }
 
-        <button onclick="initiateAbsoluteControl()" class="status-pulse w-full py-5 bg-red-600 text-black font-black text-xs uppercase tracking-[0.4em] rounded shadow-[0_0_25px_rgba(255,0,0,0.3)] active:scale-95 transition-all">
-            Execute Absolute Breach
-        </button>
-    </main>
+    function checkSovereignZone() {
+        const activeSector = localStorage.getItem('active_sector');
+        const sectorDisplay = document.getElementById('sector-display');
+        const terminal = document.getElementById('terminal');
 
-    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-black/95 backdrop-blur-3xl border-t border-red-600/20">
-        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center text-red-600/40">
-            <span class="material-symbols-outlined">grid_view</span>
-            <span class="text-[9px] font-bold uppercase mt-1">Main</span>
-        </button>
-        <div class="flex flex-col items-center text-white bg-red-600 px-6 py-2 rounded-lg shadow-[0_0_20px_rgba(255,0,0,0.4)]">
-            <span class="material-symbols-outlined">bolt</span>
-            <span class="text-[10px] font-black uppercase">CYBER</span>
-        </div>
-        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center text-red-600/40">
-            <span class="material-symbols-outlined">radar</span>
-            <span class="text-[9px] font-bold uppercase mt-1">Radar</span>
-        </button>
-    </nav>
+        if (!activeSector) {
+            sectorDisplay.innerText = "تحذير: النطاق الجغرافي غير محدد!";
+            terminal.innerHTML += "<br><span style='color:red;'>[!] ALERT: STRIKE DISABLED. SET GEO-LIMITS.</span>";
+            return null;
+        }
+        sectorDisplay.innerText = `القطاع النشط: ${activeSector} [LOCKED]`;
+        return activeSector;
+    }
 
-    <script>
-        function bootAttackProtocol() {
-            const msg = "سيادة العقيد علي العماري، وحدة الهجوم السيبراني جاهزة. بانتظار تحديد الهدف لبدء بروتوكول السيطرة المطلقة.";
-            speak(msg);
+    function launchAttack() {
+        const sector = checkSovereignZone();
+        if (!sector) {
+            speak("سيادة العقيد، الدخول مرفوض. يرجى ضبط النطاق الجغرافي أولاً.");
+            return;
         }
 
-        function selectOp(op) {
-            const line = document.createElement('div');
-            line.innerHTML = `<span class="text-white">[SELECTED]</span> OPERATION: ${op.toUpperCase()}`;
-            document.getElementById('output-stream').appendChild(line);
-            speak(`تم اختيار نمط ${op}`);
+        // تنبيه بدء الهجوم
+        speak("بدء بروتوكول الهجوم السيبراني. سيادة العقيد علي العماري، الأنظمة تحت السيطرة الآن.");
+        
+        let width = 0;
+        const fill = document.getElementById('p-fill');
+        const text = document.getElementById('p-text');
+        const terminal = document.getElementById('terminal');
+        const btn = document.getElementById('attackBtn');
+
+        btn.disabled = true;
+        btn.innerText = "STRIKE IN PROGRESS...";
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                // تنبيه اكتمال الهجوم (حتى لو الشاشة مغلقة)
+                speak("سيادة العقيد، تمت السيطرة المطلقة بنجاح فوق منطقة " + sector);
+                terminal.innerHTML += "<br><span style='color:white;'>[!!!] TOTAL SYSTEM CAPTURE [!!!]</span>";
+                btn.innerText = "STRIKE COMPLETE";
+            } else {
+                width++;
+                fill.style.width = width + "%";
+                text.innerText = width + "%";
+                
+                if(width % 20 === 0) {
+                    const logEntry = logs[Math.floor(Math.random() * logs.length)];
+                    terminal.innerHTML += `<br> ${logEntry}`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            }
+        }, 150); // سرعة الهجوم
+    }
+
+    window.onload = () => {
+        const sector = checkSovereignZone();
+        if(sector) {
+            speak("وحدة الهجوم السيبراني جاهزة للعمل في " + sector + ". بانتظار أوامرك يا سيادة العقيد.");
+        } else {
+            speak("تحذير أمني. السياج الجغرافي غير مفعل. النظام في وضع الإغلاق.");
         }
+    };
+</script>
 
-        function initiateAbsoluteControl() {
-            const target = document.getElementById('target-node').value || "UNKNOWN_NODE";
-            const stream = document.getElementById('output-stream');
-            const status = document.getElementById('lock-status');
-
-            speak(`بدء بروتوكول السيطرة المطلقة على الهدف ${target}. جاري اختراق مصفوفة الدفاع وتجاوز التشفير السيادي.`);
-            
-            status.innerText = "LINK: BREACH_ACTIVE";
-            status.classList.replace('bg-red-950/40', 'bg-red-600');
-
-            const steps = [
-                `> TARGET_LOCKED: ${target}`,
-                `> BYPASSING ENCRYPTION LAYERS... [OK]`,
-                `> INJECTING MALICIOUS FRAGMENTS... [OK]`,
-                `> OVERRIDING COMMAND CORE... [OK]`,
-                `> TOTAL SOVEREIGN CONTROL ESTABLISHED.`
-            ];
-
-            steps.forEach((txt, i) => {
-                setTimeout(() => {
-                    const l = document.createElement('div');
-                    l.className = "text-white font-bold animate-pulse";
-                    l.innerText = txt;
-                    stream.appendChild(l);
-                    if(i === steps.length -1) speak("تمت السيطرة المطلقة بنجاح.");
-                }, (i + 1) * 1200);
-            });
-        }
-
-        function speak(t) {
-            const u = new SpeechSynthesisUtterance(t);
-            u.lang = 'ar-SA';
-            u.rate = 0.9;
-            u.pitch = 0.8; 
-            window.speechSynthesis.speak(u);
-        }
-    </script>
 </body>
 </html>
