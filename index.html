@@ -3,163 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AEGIS | نظام التحقق السيادي</title>
+    <title>SOVEREIGN COMMAND | AEGIS</title>
     <style>
         :root {
+            --bg-color: #0b1622;
+            --btn-bg: #162a3d;
+            --accent-cyan: #00d4ff;
             --gold: #d4af37;
-            --bg: #050a0f;
-            --red: #ff3e3e;
-            --green: #00ff41;
         }
 
         body {
-            background: radial-gradient(circle at center, #0d1b2a 0%, var(--bg) 100%);
+            background-color: var(--bg-color);
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
             overflow: hidden;
         }
 
-        .login-frame {
-            width: 420px;
-            padding: 40px;
-            background: rgba(10, 20, 30, 0.95);
-            border: 1px solid var(--gold);
-            border-radius: 5px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.1);
-            text-align: center;
-            position: relative;
+        /* الجزء العلوي (شريط الحالة) */
+        .header-bar {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
         }
 
-        /* تأثير خطوط المسح الراداري */
-        .login-frame::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--gold);
-            opacity: 0.3;
-            animation: scan 4s linear infinite;
-        }
+        .header-bar span { color: var(--accent-cyan); font-weight: bold; letter-spacing: 2px; }
 
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
+        /* الصورة الشخصية والاسم */
+        .profile-section { text-align: center; margin-bottom: 30px; }
+        .profile-img {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
         }
+        .commander-name {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .sub-text { font-size: 0.8rem; letter-spacing: 3px; color: rgba(255,255,255,0.6); }
 
-        h2 { 
-            color: var(--gold); 
-            letter-spacing: 5px; 
-            font-size: 1.5rem; 
+        /* حقل عرض الكود */
+        #display-code {
+            width: 85%;
+            height: 60px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid #1a3a5a;
+            border-radius: 8px;
             margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: var(--accent-cyan);
         }
 
-        /* حقل الإدخال - يقبل كل شيء */
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 25px;
+        /* لوحة المفاتيح المخصصة (كما في الصورة) */
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            width: 95%;
+            padding: 10px;
         }
 
-        #authCode {
-            width: 100%;
-            padding: 15px;
-            background: #000;
-            border: 1px solid #2c3e50;
-            color: white;
-            font-size: 1.2rem;
+        .key {
+            background: var(--btn-bg);
+            border: 1px solid #1f3d5a;
+            padding: 15px 5px;
+            border-radius: 4px;
             text-align: center;
-            border-radius: 4px;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        #authCode:focus {
-            border-color: var(--gold);
-            outline: none;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        }
-
-        .btn-access {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(to bottom, #d4af37, #aa8a2e);
-            border: none;
-            color: #000;
             font-weight: bold;
-            font-size: 1rem;
             cursor: pointer;
-            text-transform: uppercase;
-            border-radius: 4px;
+            color: var(--accent-cyan);
+            transition: 0.2s;
         }
 
-        .btn-access:active { transform: scale(0.98); }
+        .key:active { background: var(--accent-cyan); color: black; }
+        .key.delete { background: #2d1010; color: #ff3e3e; }
 
-        #status-msg {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            height: 20px;
-            font-weight: bold;
-        }
+        .num-keys { grid-template-columns: repeat(5, 1fr); margin-top: 15px; }
 
-        /* تلميح نوع لوحة المفاتيح للأجهزة المحمولة */
-        input::placeholder { font-size: 0.9rem; color: #444; letter-spacing: 0; }
     </style>
 </head>
 <body>
 
-<div class="login-frame">
-    <h2>AEGIS TACTICAL</h2>
-    <p style="color: #666; font-size: 0.75rem; margin-top: -20px; margin-bottom: 30px;">بروتوكول التحقق من الهوية القيادي</p>
-    
-    <div class="input-wrapper">
-        <input type="text" id="authCode" placeholder="أدخل رمز التفويض السيادي" autocomplete="off">
-    </div>
-    
-    <button onclick="executeAuth()" class="btn-access">بدء بروتوكول الدخول</button>
+<div class="header-bar">
+    <span>((•))</span>
+    <span>SOVEREIGN COMMAND 🛡️</span>
+</div>
 
-    <div id="status-msg"></div>
+<div class="profile-section">
+    <img src="https://via.placeholder.com/150" class="profile-img" alt="Commander">
+    <div class="commander-name">العقيد علي العماري</div>
+    <div class="sub-text">SOVEREIGN SYSTEM ACCESS GATE</div>
+    <div style="font-size: 0.7rem; color: #555; margin-top: 5px;">Voice Greeting Active</div>
+</div>
+
+<div id="display-code">********</div>
+
+<div class="keyboard">
+    <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div>
+    <div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div>
+    <div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div>
+    <div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div>
+    <div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
+    <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div>
+    <div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div>
+    <div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div>
+    <div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div>
+    <div class="key" onclick="press('L')">L</div><div class="key delete" onclick="del()">⌫</div>
+</div>
+
+<div class="keyboard num-keys">
+    <div class="key" onclick="press('1')">1</div><div class="key" onclick="press('2')">2</div>
+    <div class="key" onclick="press('3')">3</div><div class="key" onclick="press('4')">4</div>
+    <div class="key" onclick="press('5')">5</div>
+    <div class="key" onclick="press('6')">6</div><div class="key" onclick="press('7')">7</div>
+    <div class="key" onclick="press('8')">8</div><div class="key" onclick="press('9')">9</div>
+    <div class="key" onclick="press('0')">0</div>
 </div>
 
 <script>
-    const KEY_SIG = "Alic2A2026";
+    let inputCode = "";
+    const MASTER_CODE = "Alic2A2026";
+
+    function press(char) {
+        inputCode += char;
+        updateDisplay();
+        if (inputCode === MASTER_CODE) {
+            accessGranted();
+        }
+    }
+
+    function del() {
+        inputCode = inputCode.slice(0, -1);
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        // عرض نجوم بدلاً من الكود للحماية
+        document.getElementById('display-code').innerText = "*".repeat(inputCode.length) || "********";
+    }
 
     function speak(text) {
         const msg = new SpeechSynthesisUtterance();
         msg.text = text;
         msg.lang = 'ar-SA';
-        msg.rate = 0.9;
         window.speechSynthesis.speak(msg);
     }
 
-    function executeAuth() {
-        const val = document.getElementById('authCode').value;
-        const status = document.getElementById('status-msg');
-
-        if (val === KEY_SIG) {
-            status.style.color = var(--green);
-            status.innerText = "✓ تم التحقق من الكود الموحد. جاري المصادقة...";
-            speak("أهلاً بك أيها القائد علي العمري. تم تفعيل نظام إيجيس. جاري تحويلك لغرفة العمليات.");
-            
-            setTimeout(() => {
-                window.location.href = "setup.html";
-            }, 3000);
-        } else {
-            status.style.color = var(--red);
-            status.innerText = "✗ خطأ: رمز التفويض غير صحيح.";
-            speak("الوصول مرفوض. تم تسجيل محاولة الدخول غير المصرح بها.");
-            // مسح الحقل لإجبار المستخدم على البدء من جديد
-            document.getElementById('authCode').value = "";
-        }
+    function accessGranted() {
+        speak("تم التحقق من الكود السيادي. أهلاً بك أيها القائد علي العمري. جاري فتح لوحة القيادة.");
+        document.getElementById('display-code').style.borderColor = "#00ff41";
+        document.getElementById('display-code').style.color = "#00ff41";
+        
+        setTimeout(() => {
+            window.location.href = "dashboard.html"; // اسم الملف الرئيسي
+        }, 3000);
     }
-
-    // دعم ضغط Enter من لوحة المفاتيح الشاملة
-    document.getElementById('authCode').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') executeAuth();
-    });
 </script>
 
 </body>
