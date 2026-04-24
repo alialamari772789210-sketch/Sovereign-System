@@ -3,133 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نواة التطور والإصلاح الذاتي - مركز الذكاء الاصطناعي</title>
+    <title>نواة التطور والإصلاح الذاتي - AI CORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         body { 
             font-family: 'Space Grotesk', sans-serif; 
-            background-color: #050a14; 
+            background-color: #020617; 
             color: #00f2ff; 
             margin: 0; 
-            overflow: hidden;
+            overflow-x: hidden;
         }
-        .evolution-bg {
-            background-image: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.1) 0%, transparent 80%);
-        }
-        .core-orb {
-            width: 200px;
-            height: 200px;
+        .evolution-sphere {
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.2) 0%, transparent 70%);
-            border: 1px solid rgba(0, 242, 255, 0.3);
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.15) 0%, transparent 70%);
+            border: 1px solid rgba(0, 242, 255, 0.2);
             position: relative;
-            animation: orb-pulse 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.05);
         }
-        @keyframes orb-pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
-            50% { transform: scale(1.1); box-shadow: 0 0 50px rgba(0, 242, 255, 0.4); }
+        .orbit {
+            position: absolute;
+            border: 1px dashed rgba(0, 242, 255, 0.2);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
         }
-        .neural-path {
-            height: 2px;
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .data-stream {
+            height: 1px;
             background: linear-gradient(90deg, transparent, #00f2ff, transparent);
             position: absolute;
             width: 100%;
-            animation: stream 2s linear infinite;
+            animation: flow 3s linear infinite;
         }
-        @keyframes stream {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+        @keyframes flow { 0% { left: -100%; } 100% { left: 100%; } }
+        .stat-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .progress-line {
+            height: 4px;
+            background: rgba(0, 242, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
         }
         .progress-fill {
-            transition: width 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            background: #00f2ff;
+            box-shadow: 0 0 10px #00f2ff;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
-<body class="evolution-bg min-h-screen flex flex-col p-6" onload="activateEvolutionCore()">
-    
-    <header class="flex justify-between items-center mb-8 border-b border-cyan-500/20 pb-4">
+<body class="min-h-screen flex flex-col p-6" onload="startEvolution()">
+
+    <header class="flex justify-between items-center mb-10 border-b border-cyan-500/10 pb-4">
         <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-cyan-400 animate-spin-slow">psychology</span>
+            <span class="material-symbols-outlined text-cyan-400 animate-pulse">neurology</span>
             <div>
-                <h1 class="text-xs font-black tracking-widest uppercase">AI Evolution Core</h1>
-                <div class="text-[9px] text-cyan-400/60">SELF_HEALING_PROTOCOL_v7.2.0</div>
+                <h1 class="text-xs font-black tracking-widest uppercase">Evolutionary Core</h1>
+                <div class="text-[9px] font-mono opacity-50 uppercase tracking-tighter">Self-Healing Active | v7.2.5</div>
             </div>
         </div>
-        <div class="text-[9px] font-bold text-green-400 bg-green-950/30 px-2 py-1 rounded border border-green-500/30">
-            CORE_INTEGRITY: 98.4%
+        <div class="text-[9px] font-bold text-cyan-400 bg-cyan-900/20 px-2 py-1 rounded border border-cyan-500/30">
+            AI_INTEGRITY: 99.8%
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center gap-8">
-        <div class="core-orb flex items-center justify-center">
-            <span class="material-symbols-outlined text-7xl animate-pulse">model_training</span>
-            <div class="absolute inset-0 border-4 border-dashed border-cyan-500/10 rounded-full animate-[spin_20s_linear_infinite]"></div>
+    <main class="flex-1 flex flex-col items-center gap-10">
+        <div class="evolution-sphere">
+            <div class="orbit w-[260px] h-[260px]"></div>
+            <div class="orbit w-[300px] h-[300px]" style="animation-direction: reverse; animation-duration: 25s;"></div>
+            <span class="material-symbols-outlined text-7xl animate-pulse text-cyan-400">Hub</span>
+            <div class="data-stream" style="top: 20%;"></div>
+            <div class="data-stream" style="top: 80%; animation-delay: 1.5s;"></div>
         </div>
 
-        <div class="w-full max-w-md space-y-5">
-            <div class="text-center mb-6">
-                <h2 class="text-xl font-bold uppercase tracking-tight">نواة التطور والإصلاح الذاتي</h2>
-                <p id="status-text" class="text-[10px] opacity-60 italic mt-1">جاري استدعاء مصفوفة التطور الذكي...</p>
+        <div class="w-full max-w-sm space-y-4">
+            <div class="stat-card p-4 rounded-lg">
+                <div class="flex justify-between text-[10px] font-black uppercase mb-2">
+                    <span>Threat Adaptation / التكيف مع التهديدات</span>
+                    <span id="stat1-val">0%</span>
+                </div>
+                <div class="progress-line">
+                    <div id="stat1-bar" class="progress-fill w-0"></div>
+                </div>
             </div>
 
-            <div class="space-y-4">
-                <div class="bg-slate-900/50 p-4 rounded-lg border border-cyan-500/10 relative overflow-hidden">
-                    <div class="flex justify-between text-[9px] font-bold mb-2 uppercase">
-                        <span>Enemy Tech Analysis / تحليل تقنيات الخصوم</span>
-                        <span id="p1-val">0%</span>
-                    </div>
-                    <div class="h-1.5 bg-cyan-950 rounded-full overflow-hidden">
-                        <div id="p1-bar" class="progress-fill h-full bg-cyan-400 w-0 shadow-[0_0_10px_#00f2ff]"></div>
-                    </div>
+            <div class="stat-card p-4 rounded-lg">
+                <div class="flex justify-between text-[10px] font-black uppercase mb-2">
+                    <span>System Self-Repair / الإصلاح الذاتي</span>
+                    <span id="stat2-val">0%</span>
                 </div>
+                <div class="progress-line">
+                    <div id="stat2-bar" class="progress-fill w-0" style="background: #4ade80; box-shadow: 0 0 10px #4ade80;"></div>
+                </div>
+            </div>
 
-                <div class="bg-slate-900/50 p-4 rounded-lg border border-cyan-500/10">
-                    <div class="flex justify-between text-[9px] font-bold mb-2 uppercase">
-                        <span>Sovereign Defense Evolution / تطور الحماية السيادية</span>
-                        <span id="p2-val">0%</span>
-                    </div>
-                    <div class="h-1.5 bg-cyan-950 rounded-full overflow-hidden">
-                        <div id="p2-bar" class="progress-fill h-full bg-green-400 w-0 shadow-[0_0_10px_#4ade80]"></div>
-                    </div>
-                </div>
+            <div class="stat-card p-3 rounded-lg border-dashed border-cyan-500/30">
+                <div class="text-[9px] opacity-60 mb-1">CURRENT ANALYSIS / التحليل الجاري</div>
+                <div id="analysis-log" class="text-[10px] font-mono italic">Initializing neural patterns...</div>
             </div>
         </div>
+
+        <button onclick="recalibrate()" class="w-full max-w-sm py-4 bg-cyan-500 text-black font-black text-xs uppercase tracking-[0.3em] rounded-lg shadow-[0_0_30px_rgba(0,242,255,0.2)] hover:brightness-110 active:scale-95 transition-all">
+            Recalibrate Evolution Matrix
+        </button>
     </main>
 
-    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-slate-950/95 backdrop-blur-3xl border-t border-cyan-500/20">
-        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center justify-center text-cyan-400/40">
+    <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 bg-slate-950/95 backdrop-blur-3xl border-t border-cyan-500/10">
+        <button onclick="window.location.href='dashboard.html'" class="flex flex-col items-center text-cyan-400/40">
             <span class="material-symbols-outlined">grid_view</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Dashboard</span>
+            <span class="text-[9px] font-bold uppercase mt-1">Main</span>
         </button>
-        <div class="flex flex-col items-center justify-center text-black bg-cyan-400 rounded-lg py-2 px-6 shadow-[0_0_20px_#00f2ff]">
-            <span class="material-symbols-outlined">auto_mode</span>
-            <span class="text-[10px] uppercase font-black">EVOLUTION</span>
+        <div class="flex flex-col items-center text-black bg-cyan-400 px-6 py-2 rounded-lg shadow-[0_0_20px_#00f2ff]">
+            <span class="material-symbols-outlined">psychology</span>
+            <span class="text-[10px] font-black uppercase">EVO_CORE</span>
         </div>
-        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center justify-center text-cyan-400/40">
+        <button onclick="window.location.href='radar.html'" class="flex flex-col items-center text-cyan-400/40">
             <span class="material-symbols-outlined">radar</span>
-            <span class="text-[9px] uppercase font-bold mt-1">Radar</span>
+            <span class="text-[9px] font-bold uppercase mt-1">Radar</span>
         </button>
     </nav>
 
     <script>
-        function activateEvolutionCore() {
-            // 1. النداء الصوتي المحدث
-            const voiceMsg = "تنبيه. نواة التطور والإصلاح الذاتي نشطة. الذكاء الاصطناعي يقوم الآن بتحليل تقنيات العدو المرصودة وتطوير بروتوكولات حماية استباقية. تم رفع كفاءة الدفاع الذاتي للمنظومة بنسبة ثمانية وثمانين في المئة.";
-            const utterance = new SpeechSynthesisUtterance(voiceMsg);
-            utterance.lang = 'ar-SA';
-            utterance.rate = 0.95;
-            window.speechSynthesis.speak(utterance);
+        function startEvolution() {
+            const msg = "سيادة العقيد علي العماري، نواة التطور والإصلاح الذاتي نشطة بالكامل. جاري مراجعة مصفوفة الحماية وتطوير بروتوكولات الاستجابة التلقائية.";
+            speak(msg);
 
-            // 2. تحديث المؤشرات البصرية
             setTimeout(() => {
-                document.getElementById('p1-bar').style.width = "94%";
-                document.getElementById('p1-val').innerText = "94%";
-                document.getElementById('p2-bar').style.width = "88%";
-                document.getElementById('p2-val').innerText = "88%";
-                document.getElementById('status-text').innerText = "تم تحديث مصفوفة الحماية بنجاح - النظام في حالة تطور مستمر";
-            }, 1000);
+                updateBars(92, 98);
+                document.getElementById('analysis-log').innerText = "Neural override complete. System hardening at optimal levels.";
+            }, 1500);
+        }
+
+        function updateBars(s1, s2) {
+            document.getElementById('stat1-bar').style.width = s1 + "%";
+            document.getElementById('stat1-val').innerText = s1 + "%";
+            document.getElementById('stat2-bar').style.width = s2 + "%";
+            document.getElementById('stat2-val').innerText = s2 + "%";
+        }
+
+        function recalibrate() {
+            speak("بدء إعادة معايرة مصفوفة التطور. جاري تحديث أنماط الدفاع السيادي.");
+            updateBars(0, 0);
+            setTimeout(() => updateBars(96, 100), 2000);
+        }
+
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'ar-SA';
+            u.rate = 0.95;
+            window.speechSynthesis.speak(u);
         }
     </script>
 </body>
