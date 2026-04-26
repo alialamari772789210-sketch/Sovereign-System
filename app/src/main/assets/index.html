@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Tactical HUD v7.2.6</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00CCFF;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .tactical-hud {
+            border: 2px solid #00CCFF;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            background: rgba(0, 20, 40, 0.9);
+            position: relative;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px #00CCFF;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 204, 255, 0.5);
+            padding-bottom: 10px;
+        }
+
+        #signalMatrix {
+            background: #00050a;
+            border: 1px solid #003366;
+            width: 100%;
+            height: 180px;
+            display: block;
+        }
+
+        .telemetry-readout {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        .status-glow {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px #00CCFF; }
+            50% { opacity: 0.6; text-shadow: 0 0 2px #00CCFF; }
+        }
+
+        .architect-seal {
+            margin-top: 15px;
+            font-size: 0.6rem;
+            color: #004466;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tactical-hud">
+        <h1 class="status-glow">SYSTEM STATUS: AEGIS ACTIVE</h1>
+        
+        <canvas id="signalMatrix"></canvas>
+
+        <div class="telemetry-readout">
+            <div style="flex: 1;">
+                <p style="margin: 5px 0;">📡 SIGNAL: <span id="signalVal" style="color: #FFF;">98%</span></p>
+                <p style="margin: 5px 0;">🛡️ CORE: <span style="color: #00FF00;">ENCRYPTED</span></p>
+                <p style="margin: 5px 0;">🛰️ LINK: <span style="color: #00FF00;">STABLE</span></p>
+            </div>
+            <div style="flex: 1; text-align: right; border-left: 1px solid #003366; padding-left: 10px;">
+                <p style="margin: 5px 0;">ARCHITECT: <span style="color: #FFF;">ALI AL-AMMARI</span></p>
+                <p style="margin: 5px 0;">RANK: <span style="color: #FFD700;">COLONEL (ENG)</span></p>
+                <p style="margin: 5px 0;">SECTOR: <span style="color: #FFF;">AL-DHALEA</span></p>
+            </div>
+        </div>
+
+        <div class="architect-seal">SOVEREIGNTY PROTOCOL v7.2.6 // MASTER STABLE</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signalMatrix');
+        const ctx = canvas.getContext('2d');
+
+        // تعديل أبعاد الكانفاس لتناسب الشاشة
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawSignal() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#00CCFF';
+            ctx.lineWidth = 1.5;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = '#00CCFF';
+            ctx.beginPath();
+            
+            const midY = canvas.height / 2;
+            for (let i = 0; i < canvas.width; i += 8) {
+                let h = Math.random() * (canvas.height / 3) + 10;
+                ctx.moveTo(i, midY - h);
+                ctx.lineTo(i, midY + h);
+            }
+            ctx.stroke();
+            
+            document.getElementById('signalVal').innerText = (97 + Math.random() * 3).toFixed(1) + "%";
+        }
+
+        setInterval(drawSignal, 120);
+    </script>
+</body>
+</html>
