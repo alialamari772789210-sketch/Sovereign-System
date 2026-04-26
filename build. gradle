@@ -70,6 +70,3 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:18.2.0' // الرصد الجغرافي
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'      // الربط الشبكي المشفر
 }
-
-وهذا كود build. gradle 
-المستودع الرئيسي
