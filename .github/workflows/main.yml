@@ -1,5 +1,4 @@
 name: Aegis Sovereign Unified Build
-
 on:
   workflow_dispatch:
 
@@ -24,12 +23,21 @@ jobs:
         with:
           ndk-version: r25c
 
-      # إجبار النظام على استخدام إصدار Gradle متوافق (8.4)
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: '8.4' 
+          gradle-version: '8.4'
 
-      # التنظيف أولاً ثم البناء لحل مشكلة Executor
       - name: Build Master Sovereign APK
-        run: gradle clean assembleDebug --stacktrace
+        run: |
+          gradle assembleDebug --no-daemon --stacktrace -Dorg.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m"
+
+      - name: Strategic Release
+        uses: softprops/action-gh-release@v2
+        if: success()
+        with:
+          files: "**/build/outputs/apk/debug/*.apk"
+          tag_name: v1.0.8-B${{ github.run_number }}
+          name: Aegis Tactical v1.0.8 Build ${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
