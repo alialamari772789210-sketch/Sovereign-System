@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER ATTACK PROTOCOL | AEGIS V7.2.5</title>
+    <style>
+        :root {
+            --neon-red: #ff0000;
+            --dark-red: #440000;
+            --gold: #d4af37;
+            --bg: #050000;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--neon-red);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        .cyber-vault {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            border: 2px solid var(--neon-red);
+            margin: 10px;
+            box-shadow: inset 0 0 50px var(--dark-red);
+        }
+
+        .header-warning {
+            font-size: 1.5rem;
+            color: var(--neon-red);
+            text-shadow: 0 0 15px var(--neon-red);
+            margin-bottom: 20px;
+            text-align: center;
+            animation: flicker 0.5s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; }
+        }
+
+        .terminal-feed {
+            width: 85%;
+            height: 250px;
+            background: black;
+            border: 1px solid var(--dark-red);
+            padding: 15px;
+            font-size: 0.75rem;
+            overflow-y: auto;
+            color: #00ff41;
+        }
+
+        .progress-bar-container {
+            width: 85%;
+            height: 25px;
+            border: 1px solid var(--gold);
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red);
+            transition: width 0.1s;
+        }
+
+        .btn-attack {
+            margin-top: 30px;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 15px 40px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 85%;
+            transition: 0.3s;
+        }
+
+        .btn-attack:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .nav-fixed {
+            position: fixed;
+            bottom: 0; width: 100%;
+            display: flex; justify-content: space-around;
+            padding: 15px 0; background: #000;
+            border-top: 1px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+<div class="cyber-vault" id="main-vault">
+    <div class="header-warning" id="status-title">☢️ PROTOCOL: ABSOLUTE CONTROL ☢️</div>
+    
+    <div id="sector-display" style="color: var(--gold); font-size: 0.7rem; margin-bottom: 10px;">
+        القطاع النشط: جاري الفحص...
+    </div>
+
+    <div class="terminal-feed" id="terminal">
+        > SYSTEM BOOT...<br>
+        > WAITING FOR COMMANDER AUTHORIZATION...<br>
+    </div>
+
+    <div class="progress-bar-container">
+        <div class="progress-fill" id="p-fill"></div>
+        <div style="position: absolute; top: 4px; left: 50%; transform: translateX(-50%); color: white; font-size: 0.7rem;">
+            DOMINATION: <span id="p-text">0%</span>
+        </div>
+    </div>
+
+    <button class="btn-attack" id="attackBtn" onclick="launchAttack()">EXECUTE CYBER STRIKE</button>
+</div>
+
+<nav class="nav-fixed">
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='dashboard.html'">1. الرئيسية</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='radar.html'">2. الرادار</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='setup.html'">3. الإعدادات</div>
+</nav>
+
+<script>
+    const logs = [
+        "> ACCESSING ENCRYPTED NODES...",
+        "> INJECTING AEGIS VIRUS...",
+        "> DISABLING LOCAL COMMAND...",
+        "> ENEMY SYSTEM OVERRIDE: SUCCESS",
+        "> EXTRACTING DATA PACKETS...",
+        "> SOVEREIGN CONTROL ESTABLISHED"
+    ];
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA'; // التنبيه باللغة العربية كما طلبت
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function checkSovereignZone() {
+        const activeSector = localStorage.getItem('active_sector');
+        const sectorDisplay = document.getElementById('sector-display');
+        const terminal = document.getElementById('terminal');
+
+        if (!activeSector) {
+            sectorDisplay.innerText = "تحذير: النطاق الجغرافي غير محدد!";
+            terminal.innerHTML += "<br><span style='color:red;'>[!] ALERT: STRIKE DISABLED. SET GEO-LIMITS.</span>";
+            return null;
+        }
+        sectorDisplay.innerText = `القطاع النشط: ${activeSector} [LOCKED]`;
+        return activeSector;
+    }
+
+    function launchAttack() {
+        const sector = checkSovereignZone();
+        if (!sector) {
+            speak("سيادة العقيد، الدخول مرفوض. يرجى ضبط النطاق الجغرافي أولاً.");
+            return;
+        }
+
+        // تنبيه بدء الهجوم
+        speak("بدء بروتوكول الهجوم السيبراني. سيادة العقيد علي العماري، الأنظمة تحت السيطرة الآن.");
+        
+        let width = 0;
+        const fill = document.getElementById('p-fill');
+        const text = document.getElementById('p-text');
+        const terminal = document.getElementById('terminal');
+        const btn = document.getElementById('attackBtn');
+
+        btn.disabled = true;
+        btn.innerText = "STRIKE IN PROGRESS...";
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                // تنبيه اكتمال الهجوم (حتى لو الشاشة مغلقة)
+                speak("سيادة العقيد، تمت السيطرة المطلقة بنجاح فوق منطقة " + sector);
+                terminal.innerHTML += "<br><span style='color:white;'>[!!!] TOTAL SYSTEM CAPTURE [!!!]</span>";
+                btn.innerText = "STRIKE COMPLETE";
+            } else {
+                width++;
+                fill.style.width = width + "%";
+                text.innerText = width + "%";
+                
+                if(width % 20 === 0) {
+                    const logEntry = logs[Math.floor(Math.random() * logs.length)];
+                    terminal.innerHTML += `<br> ${logEntry}`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            }
+        }, 150); // سرعة الهجوم
+    }
+
+    window.onload = () => {
+        const sector = checkSovereignZone();
+        if(sector) {
+            speak("وحدة الهجوم السيبراني جاهزة للعمل في " + sector + ". بانتظار أوامرك يا سيادة العقيد.");
+        } else {
+            speak("تحذير أمني. السياج الجغرافي غير مفعل. النظام في وضع الإغلاق.");
+        }
+    };
+</script>
+
+</body>
+</html>

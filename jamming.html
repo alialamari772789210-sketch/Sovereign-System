@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELECTRONIC WARFARE | AEGIS JAMMING</title>
+    <style>
+        :root {
+            --signal-purple: #9b59b6;
+            --deep-violet: #2e1a47;
+            --gold: #d4af37;
+            --bg-black: #050505;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--signal-purple);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        /* شاشة عرض الطيف الترددي */
+        .spectrum-analyzer {
+            width: 95%;
+            height: 250px;
+            margin: 20px auto;
+            border: 1px solid var(--signal-purple);
+            background: linear-gradient(to bottom, #0a0a0a, #1a0a25);
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 10px;
+            box-shadow: inset 0 0 30px rgba(155, 89, 182, 0.2);
+        }
+
+        .frequency-bar {
+            width: 6px;
+            background: var(--signal-purple);
+            transition: height 0.1s ease;
+            box-shadow: 0 0 10px var(--signal-purple);
+        }
+
+        .jamming-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .control-unit {
+            border: 1px solid var(--gold);
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.05);
+            font-size: 0.7rem;
+        }
+
+        .btn-jam {
+            grid-column: span 3;
+            background: transparent;
+            border: 2px solid var(--signal-purple);
+            color: white;
+            padding: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .active-jamming {
+            animation: pulse-red 0.5s infinite;
+            background: rgba(255, 0, 0, 0.2) !important;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { border-color: var(--signal-purple); }
+            50% { border-color: #ff0000; box-shadow: 0 0 40px #ff0000; }
+        }
+
+        .status-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: var(--gold);
+            font-size: 0.7rem;
+            text-align: left;
+        }
+
+        .nav-fixed {
+            position: fixed;
+            bottom: 0; width: 100%;
+            display: flex; justify-content: space-around;
+            padding: 15px 0; background: #000;
+            border-top: 1px solid var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+<div class="status-overlay">
+    UNIT: AEGIS-EW-01<br>
+    RANGE: 250 KM<br>
+    SECTOR: <span id="sector-name">CHECKING...</span>
+</div>
+
+<div class="spectrum-analyzer" id="spectrum"></div>
+
+<div class="jamming-controls">
+    <div class="control-unit">
+        <label>نظام GPS</label>
+        <div id="gps-status" style="color: #555;">READY</div>
+    </div>
+    <div class="control-unit">
+        <label>اتصالات</label>
+        <div id="comm-status" style="color: #555;">READY</div>
+    </div>
+    <div class="control-unit">
+        <label>درونات</label>
+        <div id="drone-status" style="color: #555;">READY</div>
+    </div>
+    
+    <button class="btn-jam" id="jamBtn" onclick="toggleJamming()">تفعيل التشويش الشامل (MAX POWER)</button>
+</div>
+
+<nav class="nav-fixed">
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='dashboard.html'">الرئيسية</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='radar.html'">الرادار</div>
+    <div style="color: var(--gold); cursor: pointer; font-size: 0.7rem;" onclick="location.href='setup.html'">الإعدادات</div>
+</nav>
+
+<script>
+    let isJamming = false;
+    const spectrum = document.getElementById('spectrum');
+    const bars = [];
+    const sector = localStorage.getItem('active_sector') || "القطاع المركزي";
+
+    // بناء المحلل الترددي
+    for (let i = 0; i < 35; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'frequency-bar';
+        spectrum.appendChild(bar);
+        bars.push(bar);
+    }
+
+    function animateSpectrum() {
+        bars.forEach(bar => {
+            const height = isJamming ? Math.random() * 95 + 5 : Math.random() * 30 + 5;
+            bar.style.height = height + '%';
+            if (isJamming) bar.style.backgroundColor = '#ff0000';
+            else bar.style.backgroundColor = '#9b59b6';
+        });
+        requestAnimationFrame(animateSpectrum);
+    }
+    animateSpectrum();
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'ar-SA';
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function toggleJamming() {
+        const btn = document.getElementById('jamBtn');
+        isJamming = !isJamming;
+
+        if (isJamming) {
+            btn.innerText = "تعطيل التشويش - النطاق معزول";
+            btn.classList.add('active-jamming');
+            document.getElementById('gps-status').innerText = "JAMMED";
+            document.getElementById('comm-status').innerText = "JAMMED";
+            document.getElementById('drone-status').innerText = "JAMMED";
+            
+            // التقرير الصوتي المتفق عليه
+            speak(`سيادة العقيد، تم تفعيل بروتوكول التشويش الشامل. عزل كامل لكافة الترددات في مدى مئتين وخمسين كيلومتر فوق منطقة ${sector}`);
+        } else {
+            btn.innerText = "تفعيل التشويش الشامل (MAX POWER)";
+            btn.classList.remove('active-jamming');
+            document.getElementById('gps-status').innerText = "READY";
+            document.getElementById('comm-status').innerText = "READY";
+            document.getElementById('drone-status').innerText = "READY";
+            speak("تم إيقاف التشويش. عودة الإشارات لوضع الرصد الصامت.");
+        }
+    }
+
+    window.onload = () => {
+        document.getElementById('sector-name').innerText = sector;
+        speak(`نظام الحرب الإلكترونية جاهز. القائد علي العماري، بانتظار أوامرك لعزل منطقة ${sector}.`);
+    };
+</script>
+
+</body>
+</html>

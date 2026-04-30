@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOLUTION CORE | AEGIS AI</title>
+    <style>
+        :root {
+            --ai-blue: #00d4ff;
+            --deep-space: #010a12;
+            --gold: #d4af37;
+            --neon-green: #39ff14;
+        }
+
+        body {
+            background-color: var(--deep-space);
+            color: var(--ai-blue);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        /* حاوية النواة المركزية */
+        .core-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle at center, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .neural-atom {
+            width: 150px;
+            height: 150px;
+            border: 2px solid var(--ai-blue);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse-core 3s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px var(--ai-blue);
+        }
+
+        @keyframes pulse-core {
+            0% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px var(--ai-blue); }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 50px var(--ai-blue); }
+            100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px var(--ai-blue); }
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 80%;
+            margin-top: 50px;
+        }
+
+        .status-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .tag { color: var(--gold); font-weight: bold; }
+
+        .ai-log {
+            width: 80%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 3px solid var(--neon-green);
+            margin-top: 20px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-y: hidden;
+        }
+
+        .btn-evolve {
+            margin-top: 30px;
+            background: transparent;
+            color: var(--ai-blue);
+            border: 1px solid var(--ai-blue);
+            padding: 12px 40px;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .btn-evolve:hover {
+            background: var(--ai-blue);
+            color: black;
+            box-shadow: 0 0 20px var(--ai-blue);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; width: 100%;
+            background: #000;
+            border-top: 1px solid var(--gold);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+
+        .nav-item { color: #555; cursor: pointer; font-size: 0.8rem; }
+        .nav-item.active { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<div class="core-container">
+    <div class="neural-atom">
+        <span style="font-size: 0.7rem; text-align: center;">AEGIS<br>CORE AI</span>
+    </div>
+
+    <div class="status-grid">
+        <div class="status-card">
+            <span class="tag">[حالة النظام]</span> SYSTEM HEALTH: 98%<br>
+            <span class="tag">[التشفير]</span> AES-512 QUANTUM READY
+        </div>
+        <div class="status-card">
+            <span class="tag">[التعلم الذاتي]</span> ACTIVE - V7.2.0<br>
+            <span class="tag">[الإصلاح التلقائي]</span> NO ERRORS DETECTED
+        </div>
+    </div>
+
+    <div class="ai-log" id="ai-log">
+        > جاري مراقبة أداء المنظومة...<br>
+        > لم يتم العثور على ثغرات في النطاق السيادي...
+    </div>
+
+    <button class="btn-evolve" onclick="startSelfRepair()">بدء فحص التحديث الذاتي</button>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-item" onclick="location.href='dashboard.html'">1. MAIN PAGE</div>
+    <div class="nav-item" onclick="location.href='radar.html'">2. RADAR</div>
+    <div class="nav-item">3. GEO-LIMITS</div>
+    <div class="nav-item active">4. EVOLUTION</div>
+</nav>
+
+<script>
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        msg.lang = 'ar-SA';
+        msg.rate = 0.9;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function startSelfRepair() {
+        const log = document.getElementById('ai-log');
+        speak("بدء بروتوكول الإصلاح والتطور. جاري فحص نواة النظام.");
+        
+        log.innerHTML += "<br>> جاري فحص بروتوكولات الرادار...";
+        setTimeout(() => {
+            log.innerHTML += "<br>> تم تحسين خوارزمية التتبع بنسبة 12%...";
+            log.innerHTML += "<br><span style='color:var(--neon-green)'>[نجاح] النظام في قمة كفاءته العملياتية.</span>";
+            speak("تم الانتهاء من التحديث الذاتي. النظام يعمل بكفاءة كاملة أيها القائد.");
+        }, 2000);
+    }
+
+    window.onload = () => {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = "Evolution Core Active. System self-optimization is in progress.";
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+    };
+</script>
+
+</body>
+</html>

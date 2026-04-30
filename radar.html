@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOVEREIGN RADAR V3.0 | MAP INTEGRATED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body { background: #010409; color: #00ff41; font-family: 'Courier New', monospace; overflow: hidden; }
+        .radar-box { position: relative; width: 280px; height: 280px; border: 2px solid #00ff41; border-radius: 50%; margin: 10px auto; background: radial-gradient(circle, #0a2d0a 0%, #010409 85%); z-index: 10; }
+        .sweeper { position: absolute; top: 50%; left: 50%; width: 50%; height: 2px; background: linear-gradient(to right, transparent, #00ff41); transform-origin: left; animation: sweep 4s linear infinite; display: none; }
+        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .scanning .sweeper { display: block; }
+        
+        #map { width: 100%; height: 250px; margin-top: -50px; z-index: 1; border-top: 1px solid #00ff41; filter: invert(100%) hue-rotate(180deg) brightness(0.6) contrast(1.2); }
+        .north-indicator { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); font-weight: black; color: #ff0000; font-size: 14px; text-shadow: 0 0 5px red; }
+        
+        /* زر التشغيل العلوي */
+        .toggle-unit { position: absolute; top: 15px; right: 15px; z-index: 100; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #300; transition: .4s; border-radius: 34px; border: 1px solid #f00; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #030; border-color: #0f4; }
+        input:checked + .slider:before { transform: translateX(24px); }
+    </style>
+</head>
+<body onload="initSystem()">
+
+    <div class="north-indicator">▲ NORTH / الشمال ▲</div>
+
+    <div class="p-4 flex justify-between items-start">
+        <div>
+            <h1 class="text-xs font-bold uppercase">AEGIS TACTICAL V3</h1>
+            <div id="radarStatus" class="text-[9px] text-red-500 uppercase">System: Idle</div>
+        </div>
+        <div class="toggle-unit">
+            <label class="switch">
+                <input type="checkbox" id="masterSwitch" onchange="toggleRadar()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div id="radar" class="radar-box">
+        <div class="sweeper"></div>
+    </div>
+
+    <div id="map"></div>
+
+    <div class="fixed bottom-20 w-full grid grid-cols-2 gap-2 px-4">
+        <div class="bg-black/80 border border-cyan-500 p-2 text-center">
+            <div class="text-[8px] opacity-60">RADAR RANGE</div>
+            <div class="text-xs font-bold">300 KM</div>
+        </div>
+        <div class="bg-black/80 border border-purple-500 p-2 text-center">
+            <div class="text-[8px] opacity-60">JAMMING RANGE</div>
+            <div class="text-xs font-bold">250 KM</div>
+        </div>
+    </div>
+
+    <script>
+        let map, userMarker, isScanning = false;
+
+        function initSystem() {
+            // إعداد الخريطة (افتراضياً قعطبة في حال عدم توفر GPS)
+            map = L.map('map', { zoomControl: false, attributionControl: false }).setView([13.84, 44.73], 11);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            if (localStorage.getItem('radar_active') === 'true') {
+                document.getElementById('masterSwitch').checked = true;
+                toggleRadar();
+            }
+        }
+
+        function toggleRadar() {
+            isScanning = document.getElementById('masterSwitch').checked;
+            localStorage.setItem('radar_active', isScanning);
+            const r = document.getElementById('radar');
+            const s = document.getElementById('radarStatus');
+
+            if (isScanning) {
+                r.classList.add('scanning');
+                s.innerText = "System: Active Scan";
+                s.className = "text-[9px] text-green-400 uppercase";
+                startLocationTracking();
+                speak("تم تفعيل الرصد الجغرافي. الرادار يغطي مديات تصل إلى ثلاثمئة كيلومتر.");
+            } else {
+                r.classList.remove('scanning');
+                s.innerText = "System: Idle";
+                s.className = "text-[9px] text-red-500 uppercase";
+                speak("تم إيقاف أنظمة الرصد والتشويش.");
+            }
+        }
+
+        function startLocationTracking() {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const { latitude, longitude } = pos.coords;
+                map.setView([latitude, longitude], 11);
+                if(userMarker) map.removeLayer(userMarker);
+                userMarker = L.circleMarker([latitude, longitude], { color: '#0f4', radius: 8 }).addTo(map)
+                    .bindPopup("موقع القيادة الحالي").openPopup();
+            });
+        }
+
+        function speak(t) {
+            const u = new SpeechSynthesisUtterance(t);
+            u.lang = 'ar-SA';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
+        }
+    </script>
+</body>
+</html>
