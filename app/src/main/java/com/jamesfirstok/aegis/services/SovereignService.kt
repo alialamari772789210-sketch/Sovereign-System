@@ -12,9 +12,17 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jamesfirstok.aegis.R
-import kotlinx.coroutines.*
+import com.jamesfirstok.aegis.core.sensors.SensorFusionEngine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class SovereignService : Service(), SensorEventListener {
 
@@ -23,6 +31,8 @@ class SovereignService : Service(), SensorEventListener {
     )
 
     private lateinit var sensorManager: SensorManager
+
+    private val fusionEngine = SensorFusionEngine()
 
     private var accelX = 0f
     private var accelY = 0f
@@ -39,18 +49,26 @@ class SovereignService : Service(), SensorEventListener {
 
         startForeground(
             1001,
-            buildNotification("AEGIS Sovereign Core Active")
+            buildNotification(
+                "AEGIS Sovereign Core Active"
+            )
         )
 
         initializeSensors()
 
         startTelemetryLoop()
+
+        Log.i(
+            "AEGIS_CORE",
+            "Sovereign Service Started"
+        )
     }
 
     private fun initializeSensors() {
 
         sensorManager =
-            getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            getSystemService(Context.SENSOR_SERVICE)
+                    as SensorManager
 
         sensorManager.getDefaultSensor(
             Sensor.TYPE_ACCELEROMETER
@@ -62,6 +80,11 @@ class SovereignService : Service(), SensorEventListener {
                 SensorManager.SENSOR_DELAY_NORMAL
             )
         }
+
+        Log.i(
+            "AEGIS_SENSORS",
+            "Accelerometer Initialized"
+        )
     }
 
     private fun startTelemetryLoop() {
@@ -77,7 +100,7 @@ class SovereignService : Service(), SensorEventListener {
                     TIME=${System.currentTimeMillis()}
                 """.trimIndent()
 
-                android.util.Log.i(
+                Log.i(
                     "AEGIS_TELEMETRY",
                     telemetry
                 )
@@ -87,12 +110,19 @@ class SovereignService : Service(), SensorEventListener {
         }
     }
 
-    private fun buildNotification(content: String): Notification {
+    private fun buildNotification(
+        content: String
+    ): Notification {
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(
+            this,
+            CHANNEL_ID
+        )
             .setContentTitle("AEGIS CORE")
             .setContentText(content)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(
+                R.drawable.ic_launcher_foreground
+            )
             .setOngoing(true)
             .build()
     }
@@ -108,23 +138,46 @@ class SovereignService : Service(), SensorEventListener {
             )
 
             val manager =
-                getSystemService(NotificationManager::class.java)
+                getSystemService(
+                    NotificationManager::class.java
+                )
 
             manager.createNotificationChannel(channel)
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
+    override fun onSensorChanged(
+        event: SensorEvent?
+    ) {
 
         event?.let {
 
             accelX = it.values[0]
             accelY = it.values[1]
             accelZ = it.values[2]
+
+            val state =
+                fusionEngine.processAccelerometer(
+                    accelX,
+                    accelY,
+                    accelZ
+                )
+
+            Log.i(
+                "AEGIS_FUSION",
+                """
+                STATUS=${state.status}
+                THREAT=${state.threatScore}
+                MOTION=${state.motionIntensity}
+                """.trimIndent()
+            )
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    override fun onAccuracyChanged(
+        sensor: Sensor?,
+        accuracy: Int
+    ) {
     }
 
     override fun onDestroy() {
@@ -133,8 +186,15 @@ class SovereignService : Service(), SensorEventListener {
 
         serviceScope.cancel()
 
+        Log.i(
+            "AEGIS_CORE",
+            "Sovereign Service Destroyed"
+        )
+
         super.onDestroy()
     }
 
-    override fun onBind(intent: Intent?): IBinder? = null
+    override fun onBind(
+        intent: Intent?
+    ): IBinder? = null
 }
