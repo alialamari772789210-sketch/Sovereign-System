@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {startService(
+    Intent(this, SovereignService::class.java)
+)
         super.onCreate(savedInstanceState)
         
         // 1. تهيئة الواجهة التكتيكية (Autonomous UI Engine)
