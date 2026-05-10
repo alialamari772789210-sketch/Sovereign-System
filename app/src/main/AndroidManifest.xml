@@ -49,5 +49,9 @@
         <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
             android:resource="@xml/device_filter" />
 
-    </application>
+    </application> 
+        <service
+    android:name=".services.SovereignService"
+    android:foregroundServiceType="dataSync"
+    android:exported="false" /> 
 </manifest>
